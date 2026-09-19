@@ -1,0 +1,784 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bellymall • Hungry? Enter the mall</title>
+    <!-- Font Awesome for icons (free version) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', 'Segoe UI', system-ui, sans-serif;
+        }
+
+        body {
+            background-color: #FEF7E9; /* cream base */
+            color: #2B1B12;
+            line-height: 1.5;
+            scroll-behavior: smooth;
+        }
+
+        /* ---- Coffee brown / black / cream palette ---- */
+        :root {
+            --coffee: #6F4E37;
+            --coffee-dark: #3E2C1F;
+            --black: #1E1E1E;
+            --cream: #FFF8EC;
+            --cream-deep: #F3E9D2;
+            --accent-gold: #D4A373;
+        }
+
+        /* ----- HEADER ----- */
+        .main-header {
+            background-color: var(--coffee);
+            background-image: radial-gradient(circle at 20% 40%, rgba(255, 248, 236, 0.1) 0%, transparent 30%),
+                              url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" opacity="0.08"><path d="M20 70 Q40 30 70 30 Q80 40 70 60 Q60 80 30 80 Q10 80 20 70" fill="%23FFF8EC"/><circle cx="30" cy="40" r="6" fill="%23FFF8EC"/><circle cx="50" cy="30" r="8" fill="%23FFF8EC"/><circle cx="65" cy="45" r="5" fill="%23FFF8EC"/></svg>');
+            background-size: cover, 180px;
+            background-blend-mode: overlay;
+            padding: 1rem 5%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            border-bottom: 6px solid var(--black);
+            box-shadow: 0 8px 0 rgba(0, 0, 0, 0.2);
+        }
+
+        .logo-area {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        /* big pot with imaginary soup logo */
+        .pot-logo {
+            width: 65px;
+            height: 65px;
+            background: var(--cream);
+            border-radius: 50% 50% 40% 40% / 60% 60% 30% 30%;
+            border: 4px solid var(--black);
+            position: relative;
+            box-shadow: 0 5px 0 #3E2C1F, inset 0 -8px 0 #5c3f2b;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            transition: transform 0.2s;
+        }
+
+        .pot-logo:hover {
+            transform: scale(1.02) rotate(2deg);
+        }
+
+        .pot-logo::before {
+            /* pot handle */
+            content: '';
+            position: absolute;
+            width: 24px;
+            height: 12px;
+            background: var(--black);
+            border-radius: 12px 12px 0 0;
+            top: -8px;
+            left: 50%;
+            transform: translateX(-50%);
+            box-shadow: 0 2px 0 #2B1B12;
+        }
+
+        .pot-logo::after {
+            /* imaginary soup bubbles */
+            content: '🍲';
+            font-size: 2.1rem;
+            line-height: 1;
+            filter: drop-shadow(0 4px 2px rgba(0,0,0,0.2));
+        }
+
+        .logo-text {
+            font-size: 2rem;
+            font-weight: 900;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--cream);
+            text-shadow: 4px 4px 0 var(--black), 6px 6px 0 rgba(0,0,0,0.3);
+            font-family: 'Poppins', sans-serif;
+            transform: rotate(-1deg);
+        }
+
+        .logo-text span {
+            color: var(--accent-gold);
+        }
+
+        /* Navigation */
+        .nav-links {
+            display: flex;
+            gap: 2.2rem;
+            align-items: center;
+            background: rgba(30, 30, 30, 0.3);
+            padding: 0.7rem 1.8rem;
+            border-radius: 50px;
+            backdrop-filter: blur(3px);
+            border: 2px solid var(--cream);
+        }
+
+        .nav-links a {
+            color: var(--cream);
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 1.1rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            transition: all 0.2s;
+            padding: 0.3rem 0;
+            border-bottom: 3px solid transparent;
+        }
+
+        .nav-links a:hover {
+            color: var(--accent-gold);
+            border-bottom-color: var(--accent-gold);
+        }
+
+        .cart-icon {
+            background: var(--black);
+            color: var(--cream);
+            padding: 0.6rem 1.2rem;
+            border-radius: 40px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            border: 2px solid var(--cream);
+            transition: 0.2s;
+            cursor: pointer;
+        }
+
+        .cart-icon:hover {
+            background: var(--coffee-dark);
+            transform: scale(1.03);
+        }
+
+        /* ----- HERO CAROUSEL (with picture) ----- */
+        .hero-carousel {
+            position: relative;
+            width: 100%;
+            height: 380px;
+            overflow: hidden;
+            border-bottom: 8px solid var(--black);
+            background: var(--coffee-dark);
+        }
+
+        .carousel-slides {
+            display: flex;
+            height: 100%;
+            transition: transform 0.6s ease-in-out;
+        }
+
+        .slide {
+            min-width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 2rem 8%;
+            background-size: cover;
+            background-position: center;
+            background-blend-mode: overlay;
+            color: var(--cream);
+            position: relative;
+        }
+
+        .slide::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 0;
+        }
+
+        .slide-content {
+            position: relative;
+            z-index: 2;
+            max-width: 900px;
+        }
+
+        .slide h1 {
+            font-size: 3.5rem;
+            font-weight: 900;
+            text-transform: uppercase;
+            text-shadow: 6px 6px 0 var(--black), 10px 10px 0 rgba(0,0,0,0.3);
+            letter-spacing: 2px;
+            line-height: 1.2;
+            margin-bottom: 0.8rem;
+        }
+
+        .slide p {
+            font-size: 1.3rem;
+            font-weight: 600;
+            background: rgba(30, 30, 30, 0.7);
+            padding: 0.8rem 2rem;
+            border-radius: 60px;
+            display: inline-block;
+            backdrop-filter: blur(4px);
+            border: 2px solid var(--cream);
+            color: var(--cream);
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        /* individual slide backgrounds (different food pics) */
+        .slide:nth-child(1) {
+            background-image: url('https://images.pexels.com/photos/1640777/pexels-photo-1640777.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2');
+        }
+        .slide:nth-child(2) {
+            background-image: url('https://images.pexels.com/photos/958545/pexels-photo-958545.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2');
+        }
+        .slide:nth-child(3) {
+            background-image: url('https://images.pexels.com/photos/1279330/pexels-photo-1279330.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2');
+        }
+
+        .carousel-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: var(--cream);
+            border: 4px solid var(--black);
+            color: var(--black);
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            font-size: 1.8rem;
+            font-weight: 900;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 10;
+            box-shadow: 4px 4px 0 var(--black);
+            transition: all 0.1s;
+        }
+
+        .carousel-btn:hover {
+            background: var(--accent-gold);
+            box-shadow: 2px 2px 0 var(--black);
+            transform: translateY(-50%) scale(0.98);
+        }
+
+        .prev {
+            left: 20px;
+        }
+
+        .next {
+            right: 20px;
+        }
+
+        /* ---- MALL DIRECTORY SECTION (category cards) ---- */
+        .directory-section {
+            padding: 3.5rem 5% 4rem;
+            background: var(--cream);
+            position: relative;
+        }
+
+        .section-title {
+            font-size: 2.5rem;
+            font-weight: 900;
+            text-transform: uppercase;
+            color: var(--coffee-dark);
+            margin-bottom: 2.5rem;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            letter-spacing: 1px;
+            text-shadow: 3px 3px 0 rgba(111, 78, 55, 0.2);
+        }
+
+        .section-title i {
+            color: var(--coffee);
+            font-size: 2.8rem;
+        }
+
+        .pill-grid {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 1.2rem;
+            margin-top: 1rem;
+        }
+
+        /* pill-shaped cards */
+        .pill-card {
+            background: white;
+            border: 4px solid var(--black);
+            border-radius: 120px;
+            padding: 1rem 1.8rem 1rem 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            box-shadow: 7px 7px 0 var(--coffee-dark);
+            transition: all 0.2s ease;
+            cursor: pointer;
+            position: relative;
+            min-width: 210px;
+            flex: 0 1 auto;
+            background: var(--cream-deep);
+        }
+
+        .pill-card:hover {
+            transform: translateY(-4px) scale(1.02);
+            box-shadow: 10px 10px 0 var(--black);
+            background: #fff6e6;
+        }
+
+        /* highlighted card */
+        .pill-card.highlighted {
+            background: var(--coffee);
+            border-color: var(--black);
+            box-shadow: 7px 7px 0 var(--accent-gold), 7px 7px 0 2px var(--black);
+            color: var(--cream);
+        }
+
+        .pill-card.highlighted .pill-icon {
+            background: var(--cream);
+            color: var(--coffee-dark);
+        }
+
+        .pill-card.highlighted .pill-slogan {
+            color: var(--cream);
+        }
+
+        .pill-card.highlighted .pill-name {
+            color: var(--cream);
+        }
+
+        .pill-icon {
+            background: var(--coffee);
+            color: var(--cream);
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            border: 3px solid var(--black);
+            flex-shrink: 0;
+        }
+
+        .pill-text {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .pill-name {
+            font-weight: 900;
+            font-size: 1.1rem;
+            line-height: 1.2;
+            text-transform: uppercase;
+            color: var(--coffee-dark);
+            letter-spacing: 0.3px;
+        }
+
+        .pill-slogan {
+            font-size: 0.75rem;
+            font-weight: 600;
+            opacity: 0.85;
+            color: #4a3729;
+            white-space: nowrap;
+            max-width: 180px;
+        }
+
+        /* hover-reveal examples — appear inside the card */
+        .pill-examples {
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            transform: translateX(-50%) translateY(0);
+            background: var(--black);
+            color: var(--cream);
+            border-radius: 30px;
+            padding: 0.7rem 1.5rem;
+            font-size: 0.8rem;
+            font-weight: 600;
+            display: flex;
+            gap: 1.2rem;
+            white-space: nowrap;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.2s, transform 0.2s;
+            box-shadow: 5px 5px 0 var(--coffee);
+            border: 2px solid var(--accent-gold);
+            z-index: 30;
+        }
+
+        .pill-card:hover .pill-examples {
+            opacity: 1;
+            transform: translateX(-50%) translateY(8px);
+            pointer-events: auto;
+        }
+
+        .pill-examples span {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .pill-examples i {
+            color: var(--accent-gold);
+        }
+
+        /* ordering bar / CTA */
+        .order-cta {
+            margin-top: 4rem;
+            display: flex;
+            justify-content: center;
+        }
+
+        .order-btn {
+            background: var(--coffee);
+            border: 5px solid var(--black);
+            color: var(--cream);
+            font-size: 1.6rem;
+            font-weight: 900;
+            padding: 1rem 3.5rem;
+            border-radius: 80px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            box-shadow: 10px 10px 0 var(--black);
+            transition: all 0.15s;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .order-btn:hover {
+            background: var(--coffee-dark);
+            transform: translate(4px, 4px);
+            box-shadow: 6px 6px 0 var(--black);
+        }
+
+        .order-btn i {
+            font-size: 2rem;
+        }
+
+        /* footer */
+        .footer {
+            background: var(--black);
+            color: var(--cream);
+            padding: 1.8rem 5%;
+            text-align: center;
+            font-weight: 600;
+            border-top: 6px solid var(--coffee);
+            margin-top: 2rem;
+        }
+
+        .footer i {
+            color: var(--accent-gold);
+            margin: 0 5px;
+        }
+
+        /* responsive */
+        @media (max-width: 900px) {
+            .main-header {
+                flex-direction: column;
+                gap: 1rem;
+                align-items: stretch;
+            }
+            .nav-links {
+                justify-content: center;
+                flex-wrap: wrap;
+            }
+            .logo-text {
+                font-size: 1.8rem;
+            }
+            .slide h1 {
+                font-size: 2.2rem;
+            }
+            .slide p {
+                font-size: 1rem;
+            }
+            .hero-carousel {
+                height: 350px;
+            }
+            .pill-card {
+                min-width: 170px;
+                padding: 0.8rem 1.2rem;
+            }
+            .pill-name {
+                font-size: 0.9rem;
+            }
+            .pill-examples {
+                white-space: normal;
+                flex-wrap: wrap;
+                width: 200px;
+            }
+        }
+
+        @media (max-width: 500px) {
+            .logo-text {
+                font-size: 1.4rem;
+            }
+            .nav-links a {
+                font-size: 0.9rem;
+            }
+            .carousel-btn {
+                width: 40px;
+                height: 40px;
+                font-size: 1.4rem;
+            }
+        }
+
+        /* fun animation for the pot */
+        @keyframes bubble {
+            0% { transform: translateY(0) scale(1); }
+            50% { transform: translateY(-3px) scale(1.05); }
+        }
+        .pot-logo::after {
+            animation: bubble 2s infinite ease-in-out;
+        }
+
+        /* hidden helper for accessibility */
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- HEADER with logo, nav, picture -->
+    <header class="main-header">
+        <div class="logo-area">
+            <div class="pot-logo" aria-label="Bellymall big pot logo with imaginary soup"></div>
+            <div class="logo-text">BELLY<span>MALL</span></div>
+        </div>
+        <nav class="nav-links">
+            <a href="#">Home</a>
+            <a href="#">Menu</a>
+            <a href="#">Deals</a>
+            <a href="#">Contact</a>
+            <div class="cart-icon" onclick="alert('🛒 Your belly cart is empty! Add something tasty.')">
+                <i class="fas fa-shopping-basket"></i> Cart
+            </div>
+        </nav>
+    </header>
+
+    <!-- CAROUSEL HERO SECTION with headline & subheadline -->
+    <section class="hero-carousel">
+        <div class="carousel-slides" id="carouselSlides">
+            <!-- Slide 1 -->
+            <div class="slide">
+                <div class="slide-content">
+                    <h1>Hungry? Enter the mall.</h1>
+                    <p>From street cravings to chef specials — order everything you love, delivered hot in minutes.</p>
+                </div>
+            </div>
+            <!-- Slide 2 (same headline, but we keep consistency; you could change but spec says headline should be that) -->
+            <div class="slide">
+                <div class="slide-content">
+                    <h1>Hungry? Enter the mall.</h1>
+                    <p>From street cravings to chef specials — order everything you love, delivered hot in minutes.</p>
+                </div>
+            </div>
+            <!-- Slide 3 -->
+            <div class="slide">
+                <div class="slide-content">
+                    <h1>Hungry? Enter the mall.</h1>
+                    <p>From street cravings to chef specials — order everything you love, delivered hot in minutes.</p>
+                </div>
+            </div>
+        </div>
+        <button class="carousel-btn prev" id="prevBtn" aria-label="Previous slide"><i class="fas fa-chevron-left"></i></button>
+        <button class="carousel-btn next" id="nextBtn" aria-label="Next slide"><i class="fas fa-chevron-right"></i></button>
+    </section>
+
+    <!-- MALL DIRECTORY + CATEGORY CARDS (7 pill-shaped cards) -->
+    <section class="directory-section">
+        <h2 class="section-title">
+            <i class="fas fa-store-alt"></i> MALL DIRECTORY
+        </h2>
+
+        <div class="pill-grid">
+            <!-- 1. Build-a-belly box (highlighted) -->
+            <div class="pill-card highlighted">
+                <div class="pill-icon"><i class="fas fa-box-open"></i></div>
+                <div class="pill-text">
+                    <span class="pill-name">Build-a-belly box</span>
+                    <span class="pill-slogan">Craft your perfect feast</span>
+                </div>
+                <div class="pill-examples">
+                    <span><i class="fas fa-utensils"></i> Rice bowl</span>
+                    <span><i class="fas fa-drumstick-bite"></i> Chicken</span>
+                    <span><i class="fas fa-carrot"></i> Plantain</span>
+                </div>
+            </div>
+
+            <!-- 2. The swallow hall -->
+            <div class="pill-card">
+                <div class="pill-icon"><i class="fas fa-utensil-spoon"></i></div>
+                <div class="pill-text">
+                    <span class="pill-name">The swallow hall</span>
+                    <span class="pill-slogan">Smooth & satisfying</span>
+                </div>
+                <div class="pill-examples">
+                    <span><i class="fas fa-bowl-food"></i> Eba</span>
+                    <span><i class="fas fa-bowl-rice"></i> Fufu</span>
+                    <span><i class="fas fa-wheat-awn"></i> Semo</span>
+                </div>
+            </div>
+
+            <!-- 3. Grain district and moi-moi corner -->
+            <div class="pill-card">
+                <div class="pill-icon"><i class="fas fa-seedling"></i></div>
+                <div class="pill-text">
+                    <span class="pill-name">Grain district & moi-moi corner</span>
+                    <span class="pill-slogan">Wholesome & steamed</span>
+                </div>
+                <div class="pill-examples">
+                    <span><i class="fas fa-bowl-rice"></i> Jollof rice</span>
+                    <span><i class="fas fa-egg"></i> Moi-moi</span>
+                    <span><i class="fas fa-cubes"></i> Ofada</span>
+                </div>
+            </div>
+
+            <!-- 4. Porridge and tubers yard -->
+            <div class="pill-card">
+                <div class="pill-icon"><i class="fas fa-carrot"></i></div>
+                <div class="pill-text">
+                    <span class="pill-name">Porridge & tubers yard</span>
+                    <span class="pill-slogan">Hearty & rustic</span>
+                </div>
+                <div class="pill-examples">
+                    <span><i class="fas fa-pot-food"></i> Yam porridge</span>
+                    <span><i class="fas fa-bowl-food"></i> Beans</span>
+                    <span><i class="fas fa-seedling"></i> Cocoyam</span>
+                </div>
+            </div>
+
+            <!-- 5. Protein factory -->
+            <div class="pill-card">
+                <div class="pill-icon"><i class="fas fa-drumstick-bite"></i></div>
+                <div class="pill-text">
+                    <span class="pill-name">Protein factory</span>
+                    <span class="pill-slogan">Power up with protein</span>
+                </div>
+                <div class="pill-examples">
+                    <span><i class="fas fa-egg"></i> Peppered egg</span>
+                    <span><i class="fas fa-fish"></i> Grilled fish</span>
+                    <span><i class="fas fa-drumstick-bite"></i> Chicken</span>
+                </div>
+            </div>
+
+            <!-- 6. Snack street -->
+            <div class="pill-card">
+                <div class="pill-icon"><i class="fas fa-cookie-bite"></i></div>
+                <div class="pill-text">
+                    <span class="pill-name">Snack street</span>
+                    <span class="pill-slogan">Quick & crunchy bites</span>
+                </div>
+                <div class="pill-examples">
+                    <span><i class="fas fa-circle"></i> Puff-puff</span>
+                    <span><i class="fas fa-bread-slice"></i> Meat pie</span>
+                    <span><i class="fas fa-cookie"></i> Chin chin</span>
+                </div>
+            </div>
+
+            <!-- 7. The extras had sides (weird name but keep it as requested) -->
+            <div class="pill-card">
+                <div class="pill-icon"><i class="fas fa-bowl-food"></i></div>
+                <div class="pill-text">
+                    <span class="pill-name">The extras had sides</span>
+                    <span class="pill-slogan">Perfect companions</span>
+                </div>
+                <div class="pill-examples">
+                    <span><i class="fas fa-leaf"></i> Coleslaw</span>
+                    <span><i class="fas fa-egg"></i> Boiled egg</span>
+                    <span><i class="fas fa-pepper-hot"></i> Pepper sauce</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- ORDER ONLINE CTA -->
+        <div class="order-cta">
+            <div class="order-btn" onclick="alert('🍽️ Order online coming soon! But you can almost taste it.')">
+                <i class="fas fa-bag-shopping"></i> ORDER ONLINE
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <p>BELLY MALL <i class="fas fa-pot-food"></i> Hungry? Enter the mall. <i class="fas fa-motorcycle"></i> Delivered hot in minutes.</p>
+        <p style="font-size:0.9rem; margin-top: 10px; opacity:0.8;">© 2025 Bellymall • everything you love, all in one mall.</p>
+    </footer>
+
+    <!-- JAVASCRIPT: carousel + fun interactions -->
+    <script>
+        (function() {
+            // Carousel logic
+            const slidesContainer = document.getElementById('carouselSlides');
+            const slides = document.querySelectorAll('.slide');
+            const prevBtn = document.getElementById('prevBtn');
+            const nextBtn = document.getElementById('nextBtn');
+            let currentIndex = 0;
+            const totalSlides = slides.length;
+
+            function updateCarousel() {
+                slidesContainer.style.transform = `translateX(-${currentIndex * 100}%)`;
+            }
+
+            function nextSlide() {
+                currentIndex = (currentIndex + 1) % totalSlides;
+                updateCarousel();
+            }
+
+            function prevSlide() {
+                currentIndex = (currentIndex - 1 + totalSlides) % totalSlides;
+                updateCarousel();
+            }
+
+            nextBtn.addEventListener('click', nextSlide);
+            prevBtn.addEventListener('click', prevSlide);
+
+            // Auto-advance every 6 seconds (fun & lively)
+            let autoInterval = setInterval(nextSlide, 6000);
+
+            // Pause auto-advance on manual navigation
+            function resetAutoInterval() {
+                clearInterval(autoInterval);
+                autoInterval = setInterval(nextSlide, 6000);
+            }
+
+            nextBtn.addEventListener('click', resetAutoInterval);
+            prevBtn.addEventListener('click', resetAutoInterval);
+
+            // Add fun: make the cart alert more playful (already inline)
+            // Also pill cards: playful console log on click
+            document.querySelectorAll('.pill-card').forEach(card => {
+                card.addEventListener('click', (e) => {
+                    // Prevent if clicking on the example popup (it's fine, but we can just log)
+                    const name = card.querySelector('.pill-name')?.innerText || 'category';
+                    console.log(`🍽️ Bellymall: you tapped "${name}" — yum!`);
+                    // Optional tiny animation feedback
+                    card.style.transform = 'scale(0.98)';
+                    setTimeout(() => { card.style.transform = ''; }, 150);
+                });
+            });
+
+            // pot logo fun: extra bubble sound? just a tiny wiggle on hover is already in CSS.
+            // Also, headline is static per spec.
+
+            // preload images just in case (carousel backgrounds)
+            // no need, but fine.
+        })();
+    </script>
+
+    <!-- ensure hover examples work on touch? they work on hover only, that's ok for modern frontend -->
+</body>
+</html>
