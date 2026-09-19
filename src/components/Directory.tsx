@@ -1,5 +1,4 @@
-import { STALLS } from "../data";
-import { toast } from "../toast";
+import { CATEGORIES } from "../data";
 
 export function Directory() {
   return (
@@ -10,17 +9,19 @@ export function Directory() {
           <h2 className="section-title">
             Every craving has <em>an address</em>
           </h2>
-          <p className="section-sub">Seven districts, one roof. Tap a stall to see what the buzz is about.</p>
+          <p className="section-sub">
+            Seven districts, one roof. Open a stall to see its full menu, add to your basket and order online.
+          </p>
         </div>
 
         <div className="directory-grid">
-          {STALLS.map((stall, i) => (
-            <article
-              key={stall.name}
+          {CATEGORIES.map((stall, i) => (
+            <a
+              key={stall.id}
               className={`stall${stall.featured ? " stall--feature" : ""} reveal`}
-              data-stall={stall.name}
+              data-stall={stall.id}
               style={{ "--reveal-delay": `${(i % 3) * 0.06}s` } as React.CSSProperties}
-              onClick={() => toast(`Opening ${stall.name} — full menu coming soon!`, "fa-store")}
+              href={`#/category/${stall.id}`}
             >
               <div>
                 <div className="stall__top">
@@ -30,19 +31,22 @@ export function Directory() {
                   <span className="stall__slogan">{stall.slogan}</span>
                 </div>
                 <h3 className="stall__name">{stall.name}</h3>
-                {stall.description && <p className="stall__desc">{stall.description}</p>}
+                <p className="stall__desc">{stall.blurb}</p>
                 <div className="stall__chips">
-                  {stall.chips.map((chip) => (
-                    <span key={chip} className="chip">
-                      {chip}
+                  {stall.menu.slice(0, 3).map((m) => (
+                    <span key={m.id} className="chip">
+                      {m.name.split(" ").slice(0, 2).join(" ")}
                     </span>
                   ))}
+                  <span className="chip chip--count">
+                    {stall.menu.length} dishes
+                  </span>
                 </div>
               </div>
               <span className="stall__link">
-                {stall.link} <i className="fa-solid fa-arrow-right"></i>
+                View menu &amp; order <i className="fa-solid fa-arrow-right"></i>
               </span>
-            </article>
+            </a>
           ))}
         </div>
       </div>

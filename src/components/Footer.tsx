@@ -1,27 +1,23 @@
-import { useEffect, useState } from "react";
+import { CATEGORIES } from "../data";
 
 const EXPLORE_LINKS = [
+  { label: "Home", href: "#/" },
   { label: "Mall directory", href: "#directory" },
   { label: "Hot picks", href: "#picks" },
+  { label: "Kitchen gallery", href: "#gallery" },
   { label: "Deals", href: "#deals" },
-  { label: "How it works", href: "#how" },
+  { label: "About us", href: "#/about" },
 ];
 
-const STALL_LINKS = ["Build-a-belly box", "The swallow hall", "Protein factory", "Snack street"];
-
 export function Footer() {
-  const [year, setYear] = useState(new Date().getFullYear());
-
-  useEffect(() => {
-    setYear(new Date().getFullYear());
-  }, []);
+  const year = new Date().getFullYear();
 
   return (
     <footer className="footer">
       <div className="container">
         <div className="footer__grid">
           <div>
-            <a className="brand" href="#top" aria-label="Bellymall home">
+            <a className="brand" href="#/" aria-label="Bellymall home">
               <span className="brand-mark" aria-hidden="true">
                 <i className="fa-solid fa-utensils"></i>
               </span>
@@ -33,16 +29,16 @@ export function Footer() {
               Everything you love, all in one mall. From street cravings to chef specials — delivered hot in minutes.
             </p>
             <div className="footer__socials">
-              <a href="#" aria-label="Bellymall on Instagram">
+              <a href="#/" aria-label="Bellymall on Instagram">
                 <i className="fa-brands fa-instagram"></i>
               </a>
-              <a href="#" aria-label="Bellymall on X">
+              <a href="#/" aria-label="Bellymall on X">
                 <i className="fa-brands fa-x-twitter"></i>
               </a>
-              <a href="#" aria-label="Bellymall on TikTok">
+              <a href="#/" aria-label="Bellymall on TikTok">
                 <i className="fa-brands fa-tiktok"></i>
               </a>
-              <a href="#" aria-label="Bellymall on Facebook">
+              <a href="#/" aria-label="Bellymall on Facebook">
                 <i className="fa-brands fa-facebook-f"></i>
               </a>
             </div>
@@ -60,9 +56,9 @@ export function Footer() {
           <div>
             <h4>Stalls</h4>
             <div className="footer__links">
-              {STALL_LINKS.map((label) => (
-                <a key={label} href="#directory">
-                  {label}
+              {CATEGORIES.map((c) => (
+                <a key={c.id} href={`#/category/${c.id}`}>
+                  {c.shortName}
                 </a>
               ))}
             </div>
@@ -86,9 +82,7 @@ export function Footer() {
           </div>
         </div>
         <div className="footer__bottom">
-          <span>
-            © {year} Bellymall • everything you love, all in one mall.
-          </span>
+          <span>© {year} Bellymall • everything you love, all in one mall.</span>
           <span>
             Made with <i className="fa-solid fa-fire"></i> and measured paddings.
           </span>
