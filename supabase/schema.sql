@@ -1,6 +1,7 @@
 -- ============================================================
 -- BELLYMALL — SUPABASE BACKEND SCHEMA
 -- Paste this whole file into: Supabase Dashboard → SQL Editor → New query → Run
+-- Safe to run more than once (every statement is idempotent).
 -- ============================================================
 
 -- 1) CORE CONTENT TABLES -------------------------------------
@@ -28,7 +29,7 @@ create table if not exists public.menu_items (
   id          text primary key,
   category_id text not null references public.categories(id) on delete cascade,
   name        text not null,
-  desc        text not null default '',
+  "desc"      text not null default '',   -- quoted: "desc" is a reserved SQL word
   price       int  not null default 0,          -- naira
   image       text not null default '',
   alt         text not null default '',
@@ -175,31 +176,49 @@ returns boolean language sql stable security definer set search_path = public as
 $$;
 
 -- public can read the storefront content
+drop policy if exists "public read site_content" on public.site_content;
+drop policy if exists "public read categories"   on public.categories;
+drop policy if exists "public read menu_items"   on public.menu_items;
 create policy "public read site_content" on public.site_content for select using (true);
 create policy "public read categories"   on public.categories    for select using (true);
 create policy "public read menu_items"   on public.menu_items    for select using (true);
 
 -- only admins can edit content
+drop policy if exists "admin write site_content" on public.site_content;
+drop policy if exists "admin write categories"   on public.categories;
+drop policy if exists "admin write menu_items"   on public.menu_items;
 create policy "admin write site_content" on public.site_content for all using (public.is_admin()) with check (public.is_admin());
 create policy "admin write categories"   on public.categories    for all using (public.is_admin()) with check (public.is_admin());
 create policy "admin write menu_items"   on public.menu_items    for all using (public.is_admin()) with check (public.is_admin());
 
 -- customers place orders anonymously; only admins read them
+drop policy if exists "anon insert orders"  on public.orders;
+drop policy if exists "admin read orders"   on public.orders;
+drop policy if exists "admin update orders" on public.orders;
 create policy "anon insert orders" on public.orders for insert to anon, authenticated with check (true);
 create policy "admin read orders"  on public.orders for select using (public.is_admin());
 create policy "admin update orders" on public.orders for update using (public.is_admin()) with check (public.is_admin());
 
 -- customers log activity; only admins read it
+drop policy if exists "anon insert activity" on public.activity;
+drop policy if exists "admin read activity"  on public.activity;
 create policy "anon insert activity" on public.activity for insert to anon, authenticated with check (true);
 create policy "admin read activity"  on public.activity for select using (public.is_admin());
 
 -- admins table: self-read; bootstrap claim of the FIRST admin; then only admins manage
+drop policy if exists "self read admins"    on public.admins;
+drop policy if exists "bootstrap first admin" on public.admins;
+drop policy if exists "admins manage admins"  on public.admins;
 create policy "self read admins" on public.admins for select using (user_id = auth.uid() or public.is_admin());
 create policy "bootstrap first admin" on public.admins for insert to authenticated
   with check (user_id = auth.uid() and not exists (select 1 from public.admins));
 create policy "admins manage admins" on public.admins for all using (public.is_admin()) with check (public.is_admin());
 
 -- storage: public read, admin upload
+drop policy if exists "public read site images"  on storage.objects;
+drop policy if exists "admin upload site images" on storage.objects;
+drop policy if exists "admin update site images" on storage.objects;
+drop policy if exists "admin delete site images" on storage.objects;
 create policy "public read site images" on storage.objects for select using (bucket_id = 'site-images');
 create policy "admin upload site images" on storage.objects for insert to authenticated with check (bucket_id = 'site-images' and public.is_admin());
 create policy "admin update site images" on storage.objects for update to authenticated using (bucket_id = 'site-images' and public.is_admin());
@@ -207,8 +226,13 @@ create policy "admin delete site images" on storage.objects for delete to authen
 
 -- 8) REALTIME (live activity + order feeds in the admin dashboard)
 
-alter publication supabase_realtime add table public.activity;
-alter publication supabase_realtime add table public.orders;
+do $$ begin
+  alter publication supabase_realtime add table public.activity;
+exception when duplicate_object then null; when undefined_object then null; end $$;
+
+do $$ begin
+  alter publication supabase_realtime add table public.orders;
+exception when duplicate_object then null; when undefined_object then null; end $$;
 
 -- DONE ✅  Next: create your admin account on the site (/#/admin), then run:
 --   insert into public.admins (user_id, email) select id, email from auth.users where email = 'YOUR_ADMIN_EMAIL';
