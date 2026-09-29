@@ -1,6 +1,11 @@
-import { CATEGORIES } from "../data";
+import { useCatalog } from "../lib/catalog";
+import { track } from "../lib/activity";
 
 export function Directory() {
+  const { categories } = useCatalog();
+
+  const onOpen = (stallName: string) => track({ kind: "category_view", label: stallName });
+
   return (
     <section className="section" id="directory">
       <div className="container">
@@ -15,13 +20,14 @@ export function Directory() {
         </div>
 
         <div className="directory-grid">
-          {CATEGORIES.map((stall, i) => (
+          {categories.map((stall, i) => (
             <a
               key={stall.id}
               className={`stall${stall.featured ? " stall--feature" : ""} reveal`}
               data-stall={stall.id}
               style={{ "--reveal-delay": `${(i % 3) * 0.06}s` } as React.CSSProperties}
               href={`#/category/${stall.id}`}
+              onClick={() => onOpen(stall.name)}
             >
               <div>
                 <div className="stall__top">

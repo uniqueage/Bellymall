@@ -5,6 +5,7 @@ export type Route =
   | { page: "about" }
   | { page: "signin" }
   | { page: "cart" }
+  | { page: "admin" }
   | { page: "category"; id: string };
 
 export function parseRoute(): Route {
@@ -15,6 +16,7 @@ export function parseRoute(): Route {
   if (hash === "/about") return { page: "about" };
   if (hash === "/signin") return { page: "signin" };
   if (hash === "/cart") return { page: "cart" };
+  if (hash === "/admin") return { page: "admin" };
   return { page: "home" };
 }
 

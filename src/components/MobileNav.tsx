@@ -1,6 +1,6 @@
 import { useCart } from "../App";
 import { useScrollLock } from "../hooks/useScrollLock";
-import { CATEGORIES } from "../data";
+import { useCatalog } from "../lib/catalog";
 
 const PAGES = [
   { label: "Home", href: "#/" },
@@ -10,6 +10,7 @@ const PAGES = [
 
 export function MobileNav() {
   const { mobileNavOpen, setMobileNavOpen, setCartOpen, session } = useCart();
+  const { categories } = useCatalog();
   useScrollLock(mobileNavOpen);
 
   return (
@@ -29,7 +30,7 @@ export function MobileNav() {
 
         <span className="mnav-sub">Stalls</span>
         <div className="mnav-stalls">
-          {CATEGORIES.map((c) => (
+          {categories.map((c) => (
             <a key={c.id} href={`#/category/${c.id}`} className="mnav-stall" onClick={() => setMobileNavOpen(false)}>
               <i className={`fa-solid ${c.icon}`}></i> {c.shortName}
             </a>

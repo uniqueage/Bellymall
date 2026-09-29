@@ -1,11 +1,15 @@
 import { useEffect, useMemo, useRef, useState } from "react";
-import { HERO_SLIDES } from "../data";
+import { useCatalog } from "../lib/catalog";
+import { track } from "../lib/activity";
 
 const AUTOPLAY_MS = 5500;
 const SWIPE_THRESHOLD = 42;
 
 export function Hero() {
-  const slides = HERO_SLIDES;
+  const { hero: slides } = useCatalog();
+  useEffect(() => {
+    track({ kind: "page_view", label: "home_hero" });
+  }, []);
   const [current, setCurrent] = useState(0);
   const [progressKey, setProgressKey] = useState(0);
   const [hoverPaused, setHoverPaused] = useState(false);

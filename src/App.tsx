@@ -29,8 +29,11 @@ import { Toaster } from "./components/Toaster";
 import { CategoryPage } from "./pages/CategoryPage";
 import { AboutPage } from "./pages/AboutPage";
 import { SignInPage } from "./pages/SignInPage";
+import { AdminPage } from "./pages/AdminPage";
 import type { CartItem } from "./data";
 import { toast } from "./toast";
+import { initCatalog } from "./lib/catalog";
+import { track, saveOrderToDb } from "./lib/activity";
 
 type CartContextValue = {
   cart: Map<string, CartItem>;
@@ -148,6 +151,20 @@ function CheckoutModal() {
       address: address.trim(),
       phone: phone.trim(),
     });
+    void saveOrderToDb({
+      id,
+      email: session?.email ?? null,
+      items: items.map((it) => ({ name: it.name, qty: it.qty, price: it.price })),
+      subtotal,
+      delivery,
+      total,
+      address: address.trim(),
+      phone: phone.trim(),
+      payment: pay,
+      status: "placed",
+      eta: Date.now() + 25 * 60 * 1000,
+    });
+    track({ kind: "order_placed", label: id, meta: { total, items: items.length } });
     clear();
     setCheckoutOpen(false);
     setCartOpen(false);
@@ -260,6 +277,11 @@ export default function App() {
 
   useReveal(routeKey);
 
+  /* boot the live catalog once */
+  useEffect(() => {
+    initCatalog();
+  }, []);
+
   useEffect(() => {
     const onHash = () => setRoute(parseRoute());
     window.addEventListener("hashchange", onHash);
@@ -268,6 +290,7 @@ export default function App() {
 
   /* scroll to top on page change; restore home-anchor targets (e.g. #picks from another page) */
   useEffect(() => {
+    track({ kind: "page_view", label: route.page });
     if (route.page !== "home") {
       window.scrollTo({ top: 0, behavior: "auto" });
       return;
@@ -351,6 +374,7 @@ export default function App() {
         {route.page === "category" && <CategoryPage id={route.id} />}
         {route.page === "about" && <AboutPage orders={orders} />}
         {route.page === "signin" && <SignInPage />}
+        {route.page === "admin" && <AdminPage />}
       </main>
       <Footer />
       <CartDrawer />

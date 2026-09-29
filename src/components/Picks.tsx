@@ -1,9 +1,22 @@
-import { DISHES } from "../data";
+import { useCatalog } from "../lib/catalog";
 import { useCart } from "../App";
 import { toast } from "../toast";
+import { track } from "../lib/activity";
 
 export function Picks() {
   const { addItem } = useCart();
+  const { categories } = useCatalog();
+
+  /* hot picks: curated dishes pulled from the live catalog */
+  const dishes = ["gr-jollof", "pf-suya", "sw-egusi", "sn-puff"]
+    .map((itemId) => {
+      for (const cat of categories) {
+        const item = cat.menu.find((m) => m.id === itemId);
+        if (item) return { ...item, stall: cat.shortName };
+      }
+      return undefined;
+    })
+    .filter((d): d is NonNullable<typeof d> => Boolean(d));
 
   return (
     <section className="section" id="picks">
@@ -17,7 +30,7 @@ export function Picks() {
         </div>
 
         <div className="dish-grid">
-          {DISHES.map((dish, i) => (
+          {dishes.map((dish, i) => (
             <article
               key={dish.id}
               className="dish reveal"
@@ -43,6 +56,7 @@ export function Picks() {
                     onClick={() => {
                       addItem({ id: dish.id, name: dish.name, price: dish.price, icon: dish.icon });
                       toast(`Added ${dish.name} to your basket`, "fa-bag-shopping");
+                      track({ kind: "add_to_cart", label: dish.name, meta: { price: dish.price, stall: dish.stall } });
                     }}
                   >
                     <i className="fa-solid fa-plus"></i>

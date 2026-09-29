@@ -1,12 +1,12 @@
 import { useEffect, useMemo, useRef, useState } from "react";
-import { GALLERY_SLIDES } from "../data";
+import { useCatalog } from "../lib/catalog";
 import { navigate } from "../router";
 
 const AUTOPLAY_MS = 5200;
 const SWIPE_THRESHOLD = 42;
 
 export function Gallery() {
-  const slides = GALLERY_SLIDES;
+  const { gallery: slides } = useCatalog();
   const [current, setCurrent] = useState(0);
   const [progressKey, setProgressKey] = useState(0);
   const [paused, setPaused] = useState(false);

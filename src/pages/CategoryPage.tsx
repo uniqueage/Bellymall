@@ -1,7 +1,9 @@
-import { useMemo } from "react";
+import { useMemo, useEffect } from "react";
 import { useCart, naira } from "../App";
-import { findCategory, CATEGORIES, type MenuItem } from "../data";
+import { useCatalog, findCategoryIn } from "../lib/catalog";
+import type { MenuItem } from "../data";
 import { toast } from "../toast";
+import { track } from "../lib/activity";
 
 function MenuCard({ item }: { item: MenuItem }) {
   const { addItem } = useCart();
@@ -26,6 +28,7 @@ function MenuCard({ item }: { item: MenuItem }) {
             onClick={() => {
               addItem({ id: item.id, name: item.name, price: item.price, icon: item.icon });
               toast(`Added ${item.name} to your basket`, "fa-bag-shopping");
+              track({ kind: "add_to_cart", label: item.name, meta: { price: item.price } });
             }}
           >
             <i className="fa-solid fa-plus"></i>
@@ -38,7 +41,14 @@ function MenuCard({ item }: { item: MenuItem }) {
 
 export function CategoryPage({ id }: { id: string }) {
   const { cart, setCartOpen } = useCart();
-  const category = findCategory(id);
+  const { categories } = useCatalog();
+  const category = findCategoryIn(categories, id);
+
+  /* log the stall visit once per mount */
+  useEffect(() => {
+    track({ kind: "category_view", label: category?.name ?? id });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [id]);
 
   const totalQty = useMemo(
     () => Array.from(cart.values()).reduce((sum, it) => sum + it.qty, 0),
@@ -66,7 +76,7 @@ export function CategoryPage({ id }: { id: string }) {
     );
   }
 
-  const related = CATEGORIES.filter((c) => c.id !== category.id).slice(0, 3);
+  const related = categories.filter((c) => c.id !== category.id).slice(0, 3);
 
   return (
     <div className="category-page">

@@ -1,4 +1,4 @@
-import { CATEGORIES } from "../data";
+import { useCatalog } from "../lib/catalog";
 
 const EXPLORE_LINKS = [
   { label: "Home", href: "#/" },
@@ -10,6 +10,7 @@ const EXPLORE_LINKS = [
 ];
 
 export function Footer() {
+  const { categories } = useCatalog();
   const year = new Date().getFullYear();
 
   return (
@@ -56,7 +57,7 @@ export function Footer() {
           <div>
             <h4>Stalls</h4>
             <div className="footer__links">
-              {CATEGORIES.map((c) => (
+              {categories.map((c) => (
                 <a key={c.id} href={`#/category/${c.id}`}>
                   {c.shortName}
                 </a>

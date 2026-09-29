@@ -1,10 +1,21 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useCart, naira, type Order } from "../App";
-import { CATEGORIES } from "../data";
+import { useCatalog } from "../lib/catalog";
+import { backendReady } from "../lib/supabaseClient";
+import { fetchOrdersByEmail, type DbOrder } from "../lib/activity";
 
 export function AboutPage({ orders }: { orders: Order[] }) {
   const { session } = useCart();
+  const { categories } = useCatalog();
   const [tab, setTab] = useState<"orders" | "stalls">("orders");
+  const [dbOrders, setDbOrders] = useState<DbOrder[]>([]);
+
+  /* signed-in customers see orders saved to Supabase too (any device) */
+  useEffect(() => {
+    if (backendReady && session?.email) {
+      void fetchOrdersByEmail(session.email).then(setDbOrders);
+    }
+  }, [session?.email]);
 
   const totalSpent = orders.reduce((sum, o) => sum + o.total, 0);
 
@@ -118,7 +129,7 @@ export function AboutPage({ orders }: { orders: Order[] }) {
 
           {tab === "orders" && (
             <div className="orders-list">
-              {orders.length === 0 ? (
+              {orders.length === 0 && dbOrders.length === 0 ? (
                 <div className="cart-empty">
                   <i className="fa-solid fa-receipt"></i>
                   <strong>No orders yet</strong>
@@ -149,12 +160,35 @@ export function AboutPage({ orders }: { orders: Order[] }) {
                   </article>
                 ))
               )}
+              {dbOrders.map((o) => (
+                <article key={o.id} className="order-card">
+                  <header className="order-card__head">
+                    <strong>{o.id}</strong>
+                    <span className="order-card__status">
+                      <i className="fa-solid fa-cloud"></i> Synced
+                    </span>
+                  </header>
+                  <ul className="order-card__items">
+                    {o.items.map((it) => (
+                      <li key={it.name}>
+                        {it.qty} × {it.name} — {naira(it.price * it.qty)}
+                      </li>
+                    ))}
+                  </ul>
+                  <footer className="order-card__foot">
+                    <span>
+                      <i className="fa-solid fa-location-dot"></i> {o.address}
+                    </span>
+                    <strong>{naira(o.total)}</strong>
+                  </footer>
+                </article>
+              ))}
             </div>
           )}
 
           {tab === "stalls" && (
             <div className="stall-list-grid">
-              {CATEGORIES.map((c) => (
+              {categories.map((c) => (
                 <a key={c.id} className="related-card" href={`#/category/${c.id}`}>
                   <img src={c.image} alt={c.imageAlt} loading="lazy" />
                   <div className="related-card__body">

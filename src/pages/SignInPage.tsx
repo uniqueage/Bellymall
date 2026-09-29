@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useCart } from "../App";
 import { sessionStore } from "../session";
 import { toast } from "../toast";
+import { track } from "../lib/activity";
 
 export function SignInPage() {
   const { session, setCartOpen } = useCart();
@@ -12,6 +13,7 @@ export function SignInPage() {
   const submit = (e: React.FormEvent) => {
     e.preventDefault();
     sessionStore.signIn(email.trim());
+    track({ kind: mode === "signin" ? "sign_in" : "sign_up", label: email.trim() });
     toast(mode === "signin" ? "Welcome back to the mall!" : "Account created — welcome to the mall!", "fa-user");
     setPassword("");
   };
@@ -35,7 +37,7 @@ export function SignInPage() {
             <button className="btn btn--primary" onClick={() => setCartOpen(true)}>
               <i className="fa-solid fa-basket-shopping"></i> Open your basket
             </button>
-            <button className="btn btn--dark" onClick={() => sessionStore.signOut()}>
+            <button className="btn btn--dark" onClick={() => { sessionStore.signOut(); track({ kind: "sign_out", label: session.email }); }}>
               <i className="fa-solid fa-arrow-right-from-bracket"></i> Sign out
             </button>
           </div>
