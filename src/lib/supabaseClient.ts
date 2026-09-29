@@ -23,8 +23,11 @@ const FALLBACK_URL = "https://puubbejmbtfsormaipxk.supabase.co";
 const FALLBACK_ANON_KEY =
   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InB1dWJiZWptYnRmc29ybWFpcHhrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTAxODczOTEsImV4cCI6MjEwNTc2MzM5MX0.JDiu3kJv3Om7ZtySce3d1bFUaYrD_H1yLGHfphH8XG8";
 
-const url = (import.meta.env.VITE_SUPABASE_URL as string | undefined) ?? FALLBACK_URL;
-const anonKey = (import.meta.env.VITE_SUPABASE_ANON_KEY as string | undefined) ?? FALLBACK_ANON_KEY;
+const envUrl = (import.meta.env.VITE_SUPABASE_URL as string | undefined)?.trim();
+const envKey = (import.meta.env.VITE_SUPABASE_ANON_KEY as string | undefined)?.trim();
+
+const url = envUrl || FALLBACK_URL;
+const anonKey = envKey || FALLBACK_ANON_KEY;
 
 export const backendReady = Boolean(url && anonKey);
 
