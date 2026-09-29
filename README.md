@@ -54,3 +54,17 @@ bun install      # or npm install
 bun run dev      # local dev server
 bun run build    # production build → dist/
 ```
+
+## Troubleshooting
+
+**uniqueage.github.io/Bellymall shows raw code / a directory listing instead of the site.**
+The repo's Pages source was set to the legacy "deploy from branch" mode, which serves the
+raw repository. It must be **Settings → Pages → Source → GitHub Actions**. After changing
+it, open the **Actions** tab → *Deploy Bellymall to GitHub Pages* → **Run workflow** (or
+push any commit) so a fresh Actions deploy overwrites the stale artifact. If both an
+Actions deploy and a legacy deploy run at the same time, whichever finishes last wins —
+just trigger one more Actions run afterwards.
+
+**The site shows old content after a deploy.**
+github.io caches pages for up to 10 minutes. Hard-refresh (Ctrl/Cmd+Shift+R) or wait it
+out — the Freebuff URL (https://bellymall.freebuff.app) picks up deploys immediately.
