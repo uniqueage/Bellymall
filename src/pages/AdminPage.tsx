@@ -1,8 +1,9 @@
 import { useCallback, useEffect, useState } from "react";
 import { getSupabase, backendReady } from "../lib/supabaseClient";
+import type { HeroRow } from "../lib/content";
 import { useCart } from "../App";
 import { toast } from "../toast";
-import type { Category, HeroSlide, MenuItem } from "../data";
+import { HERO_SLIDES as STATIC_HERO, GALLERY_SLIDES as STATIC_GALLERY, type Category, type GallerySlide, type HeroSlide, type MenuItem } from "../data";
 
 /* ============================================================
    ADMIN DASHBOARD — Bellymall control room
@@ -183,7 +184,12 @@ export function AdminPage() {
 
       <div className="container">
         {tab === "overview" && <Overview onGo={setTab} />}
-        {tab === "hero" && <HeroEditor />}
+        {tab === "hero" && (
+          <>
+            <HeroEditor />
+            <GalleryEditor />
+          </>
+        )}
         {tab === "stalls" && <StallsEditor />}
         {tab === "orders" && <OrdersBoard />}
         {tab === "activity" && <ActivityFeed />}
@@ -374,27 +380,58 @@ function Overview({ onGo }: { onGo: (t: Tab) => void }) {
    HERO & GALLERY EDITOR
    ============================================================ */
 
+type Sb = ReturnType<typeof getSupabase>;
+
+async function uploadSiteImage(sb: Sb, prefix: string, file: File): Promise<string> {
+  const path = `${prefix}/${Date.now()}-${file.name.replace(/\s+/g, "-")}`;
+  const { error } = await sb.storage.from("site-images").upload(path, file, { upsert: true });
+  if (error) throw error;
+  const { data } = sb.storage.from("site-images").getPublicUrl(path);
+  if (!data?.publicUrl) throw new Error("no url");
+  return data.publicUrl;
+}
+
+/** Static slide (nested ctas) → database row (flat cta fields). */
+function slideToRow(s: HeroSlide): HeroRow {
+  return {
+    image: s.image,
+    alt: s.alt,
+    kickerIcon: s.kickerIcon,
+    kicker: s.kicker,
+    titlePre: s.titlePre,
+    titleEm: s.titleEm,
+    titlePost: s.titlePost,
+    sub: s.sub,
+    ctaPrimary: s.ctas[0]?.label ?? "",
+    ctaPrimaryHref: s.ctas[0]?.href ?? "",
+    ctaGhost: s.ctas[1]?.label ?? "",
+    ctaGhostHref: s.ctas[1]?.href ?? "",
+    trust: s.trust,
+  };
+}
+
 function HeroEditor() {
   const sb = getSupabase();
-  const [slides, setSlides] = useState<HeroSlide[] | null>(null);
+  const [slides, setSlides] = useState<HeroRow[] | null>(null);
   const [saving, setSaving] = useState(false);
   const [uploading, setUploading] = useState<number | null>(null);
 
   useEffect(() => {
     (async () => {
       const { data } = await sb.from("site_content").select("value").eq("key", "hero_slides").maybeSingle();
-      if (data?.value) setSlides(data.value as unknown as HeroSlide[]);
+      setSlides(Array.isArray(data?.value) ? (data.value as HeroRow[]) : []);
     })();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const save = useCallback(
-    async (next: HeroSlide[]) => {
+    async (next: HeroRow[]) => {
       setSaving(true);
       try {
-        await sb.from("site_content").upsert({ key: "hero_slides", value: next });
+        const { error } = await sb.from("site_content").upsert({ key: "hero_slides", value: next });
+        if (error) throw error;
         setSlides(next);
-        toast("Hero slides saved — live on the site", "fa-floppy-disk");
+        toast("Hero saved — reload the home page to see it", "fa-floppy-disk");
       } catch {
         toast("Could not save. Are you signed in as admin?", "fa-triangle-exclamation");
       } finally {
@@ -407,13 +444,10 @@ function HeroEditor() {
   const uploadImage = async (idx: number, file: File) => {
     setUploading(idx);
     try {
-      const path = `hero/${Date.now()}-${file.name.replace(/\s+/g, "-")}`;
-      const { error } = await sb.storage.from("site-images").upload(path, file, { upsert: true });
-      if (error) throw error;
-      const { data } = sb.storage.from("site-images").getPublicUrl(path);
-      if (!data) throw new Error("no url");
-      const next = [...(slides ?? [])];
-      next[idx] = { ...next[idx], image: data.publicUrl };
+      const url = await uploadSiteImage(sb, "hero", file);
+      if (!slides) throw new Error("not loaded");
+      const next = [...slides];
+      next[idx] = { ...next[idx], image: url };
       await save(next);
       toast("Image uploaded", "fa-image");
     } catch {
@@ -425,7 +459,26 @@ function HeroEditor() {
 
   if (!slides) return <p className="section-sub">Loading hero…</p>;
 
-  const update = (idx: number, patch: Partial<HeroSlide>) => {
+  if (slides.length === 0) {
+    return (
+      <div className="admin-stack">
+        <div className="cart-empty">
+          <i className="fa-solid fa-image"></i>
+          <strong>No hero slides in the database</strong>
+          <span>The storefront is using its built-in slides. Restore them into the database to start editing.</span>
+        </div>
+        <button
+          className="btn btn--primary btn--block"
+          disabled={saving}
+          onClick={() => void save(STATIC_HERO.map(slideToRow))}
+        >
+          <i className="fa-solid fa-wand-magic-sparkles"></i> Restore the 4 default slides
+        </button>
+      </div>
+    );
+  }
+
+  const update = (idx: number, patch: Partial<HeroRow>) => {
     const next = [...slides];
     next[idx] = { ...next[idx], ...patch };
     setSlides(next);
@@ -441,17 +494,23 @@ function HeroEditor() {
               <input
                 type="file"
                 accept="image/*"
-                onChange={(e) => e.target.files?.[0] && uploadImage(i, e.target.files[0])}
+                onChange={(e) => e.target.files?.[0] && void uploadImage(i, e.target.files[0])}
               />
               {uploading === i ? <i className="fa-solid fa-spinner fa-spin"></i> : <i className="fa-solid fa-camera"></i>}
               Upload
             </label>
           </div>
           <div className="admin-card__fields">
-            <label>
-              <span>Kicker</span>
-              <input value={s.kicker} onChange={(e) => update(i, { kicker: e.target.value })} />
-            </label>
+            <div className="admin-two-col">
+              <label>
+                <span>Small label (kicker)</span>
+                <input value={s.kicker} onChange={(e) => update(i, { kicker: e.target.value })} />
+              </label>
+              <label>
+                <span>Image alt text</span>
+                <input value={s.alt} onChange={(e) => update(i, { alt: e.target.value })} />
+              </label>
+            </div>
             <label>
               <span>Title</span>
               <div className="admin-title-row">
@@ -467,29 +526,148 @@ function HeroEditor() {
             <div className="admin-two-col">
               <label>
                 <span>Primary button</span>
-                <input value={s.ctas[0]?.label ?? ""} onChange={(e) => update(i, { ctas: [{ ...s.ctas[0], label: e.target.value }, s.ctas[1]] })} />
+                <input value={s.ctaPrimary} onChange={(e) => update(i, { ctaPrimary: e.target.value })} />
               </label>
               <label>
                 <span>Primary link</span>
-                <input value={s.ctas[0]?.href ?? ""} onChange={(e) => update(i, { ctas: [{ ...s.ctas[0], href: e.target.value }, s.ctas[1]] })} />
+                <input value={s.ctaPrimaryHref} onChange={(e) => update(i, { ctaPrimaryHref: e.target.value })} />
               </label>
               <label>
                 <span>Ghost button</span>
-                <input value={s.ctas[1]?.label ?? ""} onChange={(e) => update(i, { ctas: [s.ctas[0], { ...s.ctas[1], label: e.target.value }] })} />
+                <input value={s.ctaGhost} onChange={(e) => update(i, { ctaGhost: e.target.value })} />
               </label>
               <label>
                 <span>Ghost link</span>
-                <input value={s.ctas[1]?.href ?? ""} onChange={(e) => update(i, { ctas: [s.ctas[0], { ...s.ctas[1], href: e.target.value }] })} />
+                <input value={s.ctaGhostHref} onChange={(e) => update(i, { ctaGhostHref: e.target.value })} />
               </label>
             </div>
           </div>
         </div>
       ))}
-      <button className="btn btn--primary btn--block" disabled={saving} onClick={() => save(slides)}>
+      <button className="btn btn--primary btn--block" disabled={saving} onClick={() => void save(slides)}>
         <i className="fa-solid fa-floppy-disk"></i> {saving ? "Saving…" : "Save hero changes"}
       </button>
       <p className="admin-hint">
-        <i className="fa-solid fa-circle-info"></i> Changes go live instantly for every visitor.
+        <i className="fa-solid fa-circle-info"></i> Saved text appears for every new visitor — reload the home page to
+        preview. Links look like <code>#picks</code> (home section) or <code>#/category/swallow-hall</code> (stall page).
+      </p>
+    </div>
+  );
+}
+
+/* ============================================================
+   GALLERY EDITOR
+   ============================================================ */
+
+function GalleryEditor() {
+  const sb = getSupabase();
+  const [slides, setSlides] = useState<GallerySlide[] | null>(null);
+  const [saving, setSaving] = useState(false);
+  const [uploading, setUploading] = useState<number | null>(null);
+
+  useEffect(() => {
+    (async () => {
+      const { data } = await sb.from("site_content").select("value").eq("key", "gallery_slides").maybeSingle();
+      setSlides(Array.isArray(data?.value) ? (data.value as GallerySlide[]) : []);
+    })();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const save = useCallback(
+    async (next: GallerySlide[]) => {
+      setSaving(true);
+      try {
+        const { error } = await sb.from("site_content").upsert({ key: "gallery_slides", value: next });
+        if (error) throw error;
+        setSlides(next);
+        toast("Gallery saved — reload the home page to see it", "fa-floppy-disk");
+      } catch {
+        toast("Could not save. Are you signed in as admin?", "fa-triangle-exclamation");
+      } finally {
+        setSaving(false);
+      }
+    },
+    [sb]
+  );
+
+  const uploadImage = async (idx: number, file: File) => {
+    setUploading(idx);
+    try {
+      const url = await uploadSiteImage(sb, "gallery", file);
+      if (!slides) throw new Error("not loaded");
+      const next = [...slides];
+      next[idx] = { ...next[idx], image: url };
+      await save(next);
+      toast("Image uploaded", "fa-image");
+    } catch {
+      toast("Upload failed — check admin rights", "fa-triangle-exclamation");
+    } finally {
+      setUploading(null);
+    }
+  };
+
+  if (!slides) return <p className="section-sub">Loading gallery…</p>;
+
+  if (slides.length === 0) {
+    return (
+      <div className="admin-stack">
+        <div className="cart-empty">
+          <i className="fa-solid fa-images"></i>
+          <strong>No gallery slides in the database</strong>
+          <span>Restore the built-in gallery into the database to start editing it.</span>
+        </div>
+        <button className="btn btn--primary btn--block" disabled={saving} onClick={() => void save(STATIC_GALLERY)}>
+          <i className="fa-solid fa-wand-magic-sparkles"></i> Restore the 7 default slides
+        </button>
+      </div>
+    );
+  }
+
+  const update = (idx: number, patch: Partial<GallerySlide>) => {
+    const next = [...slides];
+    next[idx] = { ...next[idx], ...patch };
+    setSlides(next);
+  };
+
+  return (
+    <div className="admin-stack">
+      {slides.map((s, i) => (
+        <div key={i} className="admin-card admin-card--slide">
+          <div className="admin-card__media">
+            <img src={s.image} alt={s.alt} loading="lazy" />
+            <label className="admin-upload">
+              <input
+                type="file"
+                accept="image/*"
+                onChange={(e) => e.target.files?.[0] && void uploadImage(i, e.target.files[0])}
+              />
+              {uploading === i ? <i className="fa-solid fa-spinner fa-spin"></i> : <i className="fa-solid fa-camera"></i>}
+              Upload
+            </label>
+          </div>
+          <div className="admin-card__fields">
+            <div className="admin-two-col">
+              <label>
+                <span>Caption</span>
+                <input value={s.caption} onChange={(e) => update(i, { caption: e.target.value })} />
+              </label>
+              <label>
+                <span>Where (badge)</span>
+                <input value={s.where} onChange={(e) => update(i, { where: e.target.value })} />
+              </label>
+            </div>
+            <label>
+              <span>Image alt text</span>
+              <input value={s.alt} onChange={(e) => update(i, { alt: e.target.value })} />
+            </label>
+          </div>
+        </div>
+      ))}
+      <button className="btn btn--primary btn--block" disabled={saving} onClick={() => void save(slides)}>
+        <i className="fa-solid fa-floppy-disk"></i> {saving ? "Saving…" : "Save gallery changes"}
+      </button>
+      <p className="admin-hint">
+        <i className="fa-solid fa-circle-info"></i> The gallery is the second carousel on the home page.
       </p>
     </div>
   );
@@ -501,7 +679,9 @@ function HeroEditor() {
 
 function StallsEditor() {
   const sb = getSupabase();
-  const [cats, setCats] = useState<Category[] | null>(null);
+  type AdminDish = MenuItem & { category_id: string; available?: boolean };
+  type AdminCat = Omit<Category, "menu"> & { menu: AdminDish[] };
+  const [cats, setCats] = useState<AdminCat[] | null>(null);
   const [savingId, setSavingId] = useState<string | null>(null);
   const [uploadItem, setUploadItem] = useState<string | null>(null);
 
@@ -511,8 +691,9 @@ function StallsEditor() {
       sb.from("menu_items").select("*").order("sort_order"),
     ]);
     if (!catsRes.data) return;
-    const byCat = new Map<string, MenuItem[]>();
-    for (const row of (itemsRes.data ?? []) as (MenuItem & { category_id: string })[]) {
+    type AdminDish = MenuItem & { category_id: string; available?: boolean };
+    const byCat = new Map<string, AdminDish[]>();
+    for (const row of (itemsRes.data ?? []) as AdminDish[]) {
       const list = byCat.get(row.category_id) ?? [];
       list.push({ ...row });
       byCat.set(row.category_id, list);
@@ -606,7 +787,11 @@ function StallsEditor() {
                     {savingId === m.id && <i className="fa-solid fa-spinner fa-spin"></i>}
                   </div>
                   <label className="admin-toggle">
-                    <input type="checkbox" checked onChange={(e) => void saveAvailability(m.id, e.target.checked)} />
+                    <input
+                      type="checkbox"
+                      checked={m.available ?? true}
+                      onChange={(e) => void saveAvailability(m.id, e.target.checked)}
+                    />
                     Available
                   </label>
                 </div>

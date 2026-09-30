@@ -22,7 +22,8 @@ export function isLiveContentLoaded() {
 
 /* ---------------- hero ---------------- */
 
-type HeroRow = Omit<HeroSlide, "ctas"> & {
+/** Hero slide as stored in site_content: flat CTA fields (the DB format). */
+export type HeroRow = Omit<HeroSlide, "ctas"> & {
   ctaPrimary: string;
   ctaPrimaryHref: string;
   ctaGhost: string;
