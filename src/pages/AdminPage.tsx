@@ -75,36 +75,34 @@ export function AdminPage() {
   const [booting, setBooting] = useState(true);
 
   /* ------------ auth gate ------------ */
+  const check = useCallback(async () => {
+    if (!backendReady) {
+      setIsAdmin(false);
+      setBooting(false);
+      return;
+    }
+    const sb = getSupabase();
+    const { data } = await sb.auth.getSession();
+    const uid = data.session?.user?.id;
+    if (!uid) {
+      setIsAdmin(false);
+      setBooting(false);
+      return;
+    }
+    const { data: row } = await sb.from("admins").select("user_id").eq("user_id", uid).maybeSingle();
+    setIsAdmin(Boolean(row));
+    setBooting(false);
+  }, []);
+
   useEffect(() => {
     if (!backendReady) {
       setBooting(false);
       return;
     }
-    const sb = getSupabase();
-    let cancelled = false;
-
-    const check = async () => {
-      const { data } = await sb.auth.getSession();
-      const uid = data.session?.user?.id;
-      if (cancelled) return;
-      if (!uid) {
-        setIsAdmin(false);
-        setBooting(false);
-        return;
-      }
-      const { data: row } = await sb.from("admins").select("user_id").eq("user_id", uid).maybeSingle();
-      if (cancelled) return;
-      setIsAdmin(Boolean(row));
-      setBooting(false);
-    };
     void check();
-
-    const { data: sub } = sb.auth.onAuthStateChange(() => void check());
-    return () => {
-      cancelled = true;
-      sub.subscription.unsubscribe();
-    };
-  }, []);
+    const { data: sub } = getSupabase().auth.onAuthStateChange(() => void check());
+    return () => sub.subscription.unsubscribe();
+  }, [check]);
 
   if (!backendReady) {
     return (
@@ -133,7 +131,7 @@ export function AdminPage() {
   }
 
   if (isAdmin === false) {
-    return <AdminAuth onSignedIn={() => setIsAdmin(null)} />;
+    return <AdminAuth onSignedIn={() => void check()} />;
   }
 
   if (isAdmin === null) {
@@ -215,6 +213,16 @@ function AdminAuth({ onSignedIn }: { onSignedIn: () => void }) {
       } else {
         const { error } = await sb.auth.signUp({ email, password });
         if (error) throw error;
+      }
+      // Bootstrap claim: the FIRST account inserts itself into public.admins
+      // (RLS allows this while the admins table is still empty). If the slot is
+      // already taken the insert is rejected by RLS and quietly ignored.
+      const { data: { user } } = await sb.auth.getUser();
+      if (user) {
+        await sb.from("admins").upsert(
+          { user_id: user.id, email: user.email ?? email },
+          { onConflict: "user_id" }
+        );
       }
       toast("Admin signed in", "fa-user-shield");
       onSignedIn();
