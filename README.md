@@ -27,7 +27,8 @@ From **Project Settings → API**, copy the Project URL and anon public key into
 
 ### 3. Claim the admin dashboard
 
-Open **`/#/admin`** on the site and create an account.
+Open **`/#/admin`** on the site and create an account (or use the **`/admin.html`** shortcut,
+which forwards straight to the console: [bellymall.freebuff.app/admin.html](https://bellymall.freebuff.app/admin.html)).
 **The first account registered becomes the admin automatically.**
 (To add more admins later, run in the Supabase SQL editor:
 
