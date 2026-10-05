@@ -6,16 +6,23 @@ Food-hall ordering site built with **Vite + React + TypeScript**.
 
 The site works without a backend (static catalog + local demo orders). With Supabase configured it becomes fully dynamic:
 
-- Editable **hero carousel** and **gallery** (images, titles, buttons)
-- Editable **stalls and dishes** (prices, photos, availability)
-- **Orders** saved to Postgres, with an admin order board and status updates
-- **Customer activity** tracked (page views, stall visits, basket adds, orders, sign-ins) with a live realtime feed
+- Editable **hero carousel** and **gallery** (images, titles, buttons, add/remove slides)
+- Full **products CRUD** (add/edit/delete dishes: name, story, price, badge, rating, photo, availability)
+- **Categories CRUD** — create a new stall from the dashboard and it appears on the storefront at once
+- **Sellers** directory (stall owners/kitchen staff) with photos, contact details and active/paused status
+- **Customers** directory assembled from orders + activity (orders, spend, repeat buyers, last seen)
+- **Orders** saved to Postgres, with a searchable order board and status updates
+- **Store settings** (announcement ticker, delivery fee & free-delivery threshold, contact details, socials)
+- **Customer activity** tracked (page views, stall visits, basket adds, searches, orders, sign-ins) with a live realtime feed
+- **Search** in the storefront (⌘K / Ctrl+K or `/`) and inside every admin list
 
 ### 1. Create the database
 
 1. Create a project at [supabase.com](https://supabase.com)
 2. Open **SQL Editor → New query**, paste the whole contents of [`supabase/schema.sql`](supabase/schema.sql), and run it.
    This creates the tables, security policies, image storage bucket, seeds your current menu, and enables realtime.
+   The file is idempotent — if you installed an older version, just run it again to add the newer tables
+   (`sellers`, `store_settings`) without touching your data.
 
 ### 2. Add your keys
 
@@ -42,11 +49,22 @@ select id, email from auth.users where email = 'someone@example.com';
 
 | Section | What you can do |
 | --- | --- |
-| Overview | Orders, revenue, customer events at a glance |
-| Hero & gallery | Edit slide titles, text, buttons; upload new images |
-| Stalls & dishes | Change any price, swap dish photos, hide sold-out items |
-| Orders | Every order with items/address/phone; move status from *placed → preparing → on the way → delivered* |
-| Live activity | Realtime stream of what customers do on the site |
+| Overview | Orders, revenue, customers, products, sellers and live events; best sellers, latest orders, quick actions |
+| Products | Add, edit and delete dishes — name, description, price, badge, rating, icon, stall, order, photo, availability |
+| Categories | Create a new stall (it appears in the directory immediately), edit its copy/icon/photo, feature or delete it |
+| Orders | Search orders; filter by status; items, address, phone, payment; move status *placed → preparing → on the way → delivered* |
+| Sellers | Add/edit/delete sellers: role, stall assignment, phone, email, rating, photo, active/paused |
+| Customers | Who buys, how much and how often — orders, spend, repeat buyers, last order, last action, anonymous visitors |
+| Contents | Hero + gallery carousels: titles, subtitles, buttons, trust badges, photos; add or remove slides |
+| Settings | Announcement ticker, delivery fee, free-delivery threshold, contact details, social links |
+| Activity | Realtime stream of customer actions with per-event filters and search |
+
+## Search
+
+- **Storefront:** the magnifying-glass button in the header (or press **⌘K / Ctrl+K**, or **`/`** anywhere)
+  searches stalls and dishes live; picking a result opens that stall's page and logs a `search` event.
+- **Admin:** the search box at the top of the dashboard filters the active section (products, categories,
+  orders, sellers, customers, activity).
 
 ## Development
 

@@ -31,6 +31,9 @@ const anonKey = envKey || FALLBACK_ANON_KEY;
 
 export const backendReady = Boolean(url && anonKey);
 
+/** Public project URL (safe to display — it is not a secret). */
+export const SUPABASE_URL = url;
+
 export const supabase: SupabaseClient | null = backendReady
   ? createClient(url!, anonKey!, {
       auth: {

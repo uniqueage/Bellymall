@@ -1,5 +1,6 @@
 import { useMemo } from "react";
 import { useCart } from "../App";
+import { openSearch } from "./SearchOverlay";
 
 export function Header() {
   const { cart, setCartOpen, session, route, mobileNavOpen, setMobileNavOpen } = useCart();
@@ -49,6 +50,9 @@ export function Header() {
               <i className="fa-solid fa-arrow-right-to-bracket"></i> Sign in
             </a>
           )}
+          <button className="search-btn" onClick={openSearch} aria-label="Search dishes and stalls">
+            <i className="fa-solid fa-magnifying-glass" aria-hidden="true"></i>
+          </button>
           <button className="cart-btn" onClick={() => setCartOpen(true)} aria-label="Open your basket">
             <i className="fa-solid fa-basket-shopping" aria-hidden="true"></i>
             <span className="cart-badge" hidden={totalQty === 0}>

@@ -33,7 +33,9 @@ import { AdminPage } from "./pages/AdminPage";
 import type { CartItem } from "./data";
 import { toast } from "./toast";
 import { initCatalog } from "./lib/catalog";
+import { loadSettings, useSettings } from "./lib/settings";
 import { track, saveOrderToDb } from "./lib/activity";
+import { SearchOverlay } from "./components/SearchOverlay";
 
 type CartContextValue = {
   cart: Map<string, CartItem>;
@@ -119,6 +121,7 @@ function CheckoutModal() {
   const [address, setAddress] = useState("12 Awolowo Road, Ikoyi, Lagos");
   const [phone, setPhone] = useState("");
   const [pay, setPay] = useState<"card" | "transfer" | "delivery">("card");
+  const { deliveryFee, freeDeliveryOver } = useSettings();
   const open = checkoutOpen && items.length > 0;
 
   useScrollLock(open);
@@ -132,7 +135,8 @@ function CheckoutModal() {
 
   if (!open) return null;
 
-  const delivery = subtotal >= 10000 ? 0 : 900;
+  /* free-delivery threshold and fee come from admin → Settings (live) */
+  const delivery = freeDeliveryOver > 0 && subtotal >= freeDeliveryOver ? 0 : deliveryFee;
   const total = subtotal + delivery;
 
   const submit = (e: React.FormEvent) => {
@@ -277,9 +281,10 @@ export default function App() {
 
   useReveal(routeKey);
 
-  /* boot the live catalog once */
+  /* boot the live catalog + store settings once */
   useEffect(() => {
     initCatalog();
+    void loadSettings();
   }, []);
 
   useEffect(() => {
@@ -379,6 +384,7 @@ export default function App() {
       <Footer />
       <CartDrawer />
       <CheckoutModal />
+      <SearchOverlay />
       <Toaster />
     </CartContext.Provider>
   );

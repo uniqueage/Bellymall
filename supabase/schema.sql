@@ -224,7 +224,57 @@ create policy "admin upload site images" on storage.objects for insert to authen
 create policy "admin update site images" on storage.objects for update to authenticated using (bucket_id = 'site-images' and public.is_admin());
 create policy "admin delete site images" on storage.objects for delete to authenticated using (bucket_id = 'site-images' and public.is_admin());
 
--- 8) REALTIME (live activity + order feeds in the admin dashboard)
+-- 8) SELLERS (stall operators managed from the admin dashboard) ----
+
+create table if not exists public.sellers (
+  id         uuid primary key default gen_random_uuid(),
+  name       text not null,
+  stall      text references public.categories(id) on delete set null,
+  role       text not null default 'Chef',
+  phone      text not null default '',
+  email      text not null default '',
+  rating     numeric(3,1) not null default 4.7,
+  status     text not null default 'active',           -- active | paused
+  image      text not null default '',
+  sort_order int not null default 0,
+  created_at timestamptz not null default now()
+);
+
+alter table public.sellers enable row level security;
+
+drop policy if exists "public read sellers" on public.sellers;
+drop policy if exists "admin write sellers" on public.sellers;
+create policy "public read sellers" on public.sellers for select using (true);
+create policy "admin write sellers" on public.sellers for all using (public.is_admin()) with check (public.is_admin());
+
+insert into public.sellers (id, name, stall, role, phone, email, rating, status, sort_order) values
+('a1000000-0000-4000-8000-000000000001','Mama Tunde','swallow-hall','Head chef','0803 111 2222','tunde@bellymall.ng',4.9,'active',0),
+('a1000000-0000-4000-8000-000000000002','Chef Emeka','protein-factory','Grill master','0803 222 3333','emeka@bellymall.ng',4.8,'active',1),
+('a1000000-0000-4000-8000-000000000003','Ngozi Okafor','grain-district','Rice specialist','0803 333 4444','ngozi@bellymall.ng',4.7,'active',2),
+('a1000000-0000-4000-8000-000000000004','Bisi Adeyemi','snack-street','Baker','0803 444 5555','bisi@bellymall.ng',4.8,'active',3)
+on conflict (id) do nothing;
+
+-- 9) STORE SETTINGS (drives the ticker, checkout delivery and footer) ----
+
+insert into public.site_content (key, value) values
+('store_settings', '{
+  "storeName":"Bellymall",
+  "tagline":"Everything you love, all in one mall",
+  "ticker":"Free delivery on orders over ₦10,000  •  New: Suya Fridays at the Protein Factory  •  Use code BELLY10 for 10% off your first feast  •  120+ stalls under one roof",
+  "deliveryFee":900,
+  "freeDeliveryOver":10000,
+  "address":"12 Food Hall Way, Lagos",
+  "supportPhone":"+234 800 BELLY-01",
+  "supportEmail":"hello@bellymall.ng",
+  "hours":"Open daily · 9am – 11pm",
+  "instagram":"https://instagram.com/bellymall",
+  "twitter":"https://x.com/bellymall",
+  "tiktok":"https://tiktok.com/@bellymall",
+  "facebook":"https://facebook.com/bellymall"
+}'::jsonb)
+on conflict (key) do nothing;
+
+-- 10) REALTIME (live activity + order feeds in the admin dashboard)
 
 do $$ begin
   alter publication supabase_realtime add table public.activity;

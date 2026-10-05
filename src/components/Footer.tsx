@@ -1,4 +1,5 @@
 import { useCatalog } from "../lib/catalog";
+import { useSettings } from "../lib/settings";
 
 const EXPLORE_LINKS = [
   { label: "Home", href: "#/" },
@@ -11,6 +12,7 @@ const EXPLORE_LINKS = [
 
 export function Footer() {
   const { categories } = useCatalog();
+  const settings = useSettings();
   const year = new Date().getFullYear();
 
   return (
@@ -27,19 +29,20 @@ export function Footer() {
               </span>
             </a>
             <p className="footer__about">
-              Everything you love, all in one mall. From street cravings to chef specials — delivered hot in minutes.
+              {settings.tagline || "Everything you love, all in one mall"}. From street cravings to chef specials —
+              delivered hot in minutes.
             </p>
             <div className="footer__socials">
-              <a href="#/" aria-label="Bellymall on Instagram">
+              <a href={settings.instagram || "#/"} aria-label={`${settings.storeName} on Instagram`}>
                 <i className="fa-brands fa-instagram"></i>
               </a>
-              <a href="#/" aria-label="Bellymall on X">
+              <a href={settings.twitter || "#/"} aria-label={`${settings.storeName} on X`}>
                 <i className="fa-brands fa-x-twitter"></i>
               </a>
-              <a href="#/" aria-label="Bellymall on TikTok">
+              <a href={settings.tiktok || "#/"} aria-label={`${settings.storeName} on TikTok`}>
                 <i className="fa-brands fa-tiktok"></i>
               </a>
-              <a href="#/" aria-label="Bellymall on Facebook">
+              <a href={settings.facebook || "#/"} aria-label={`${settings.storeName} on Facebook`}>
                 <i className="fa-brands fa-facebook-f"></i>
               </a>
             </div>
@@ -68,16 +71,16 @@ export function Footer() {
             <h4>Reach us</h4>
             <div className="footer__contact">
               <span>
-                <i className="fa-solid fa-location-dot"></i> 12 Food Hall Way, Lagos
+                <i className="fa-solid fa-location-dot"></i> {settings.address}
               </span>
               <span>
-                <i className="fa-solid fa-phone"></i> +234 800 BELLY-01
+                <i className="fa-solid fa-phone"></i> {settings.supportPhone}
               </span>
               <span>
-                <i className="fa-solid fa-envelope"></i> hello@bellymall.ng
+                <i className="fa-solid fa-envelope"></i> {settings.supportEmail}
               </span>
               <span>
-                <i className="fa-solid fa-clock"></i> Open daily · 9am – 11pm
+                <i className="fa-solid fa-clock"></i> {settings.hours}
               </span>
             </div>
           </div>
