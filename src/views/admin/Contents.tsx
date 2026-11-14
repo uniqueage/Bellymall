@@ -263,7 +263,7 @@ function HeroEditor() {
       </button>
       <p className="admin-hint">
         <i className="fa-solid fa-circle-info"></i> Saved text appears for every new visitor — reload the home page to
-        preview. Links look like <code>#picks</code> (home section) or <code>#/category/swallow-hall</code> (stall page).
+        preview. Links look like <code>/#picks</code> (home section) or <code>/stall/swallow-hall</code> (stall page).
       </p>
     </>
   );

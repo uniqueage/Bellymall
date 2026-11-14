@@ -14,7 +14,7 @@ import {
 /* ============================================================
    CATEGORIES — create, edit, reorder and delete stalls. A new
    category created here appears on the storefront directory and
-   gets its own #/category/<id> page immediately.
+   gets its own /stall/<id> page immediately.
    ============================================================ */
 
 type Props = { query: string };
@@ -128,7 +128,7 @@ export function Categories({ query }: Props) {
 
       <p className="admin-hint">
         <i className="fa-solid fa-circle-info"></i> A new category is added to the mall directory and opens at{" "}
-        <code>#/category/&lt;id&gt;</code>. Deleting a stall also removes its dishes (database cascade).
+        <code>/stall/&lt;id&gt;</code>. Deleting a stall also removes its dishes (database cascade).
       </p>
     </div>
   );

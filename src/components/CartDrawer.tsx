@@ -1,5 +1,8 @@
+"use client";
+
 import { useEffect, useMemo } from "react";
-import { useCart, naira } from "../App";
+import Link from "next/link";
+import { useCart, naira } from "../store";
 import { useScrollLock } from "../hooks/useScrollLock";
 
 export function CartDrawer() {
@@ -47,9 +50,9 @@ export function CartDrawer() {
               <i className="fa-solid fa-basket-shopping"></i>
               <strong>Your belly basket is empty</strong>
               <span>Add something tasty from any stall and it lands right here.</span>
-              <a className="btn btn--dark btn--sm" href="#directory" onClick={() => setCartOpen(false)}>
+              <Link className="btn btn--dark btn--sm" href="/#directory" onClick={() => setCartOpen(false)}>
                 <i className="fa-solid fa-store"></i> Browse the stalls
-              </a>
+              </Link>
             </div>
           ) : (
             items.map((it) => (

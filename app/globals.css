@@ -2407,3 +2407,39 @@ section[id] { scroll-margin-top: 92px; }
   background: var(--cream);
 }
 .search-foot__hint { margin-left: auto; display: inline-flex; align-items: center; gap: .35rem; }
+/* ============================================================
+   NEXT.JS SHELL ADDITIONS
+   Skip link, print-safe nav, and calmer motion defaults.
+   The palette above is untouched.
+   ============================================================ */
+
+.skip-link {
+  position: fixed;
+  top: .75rem;
+  left: 50%;
+  z-index: 200;
+  transform: translate(-50%, -200%);
+  background: var(--ink);
+  color: var(--cream);
+  font-weight: 700;
+  font-size: var(--fs-400);
+  padding: .7em 1.4em;
+  border-radius: var(--r-pill);
+  box-shadow: var(--shadow-md);
+  transition: transform .25s var(--ease);
+}
+.skip-link:focus-visible { transform: translate(-50%, 0); }
+
+#main { display: block; }
+#main:focus { outline: none; }
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *,
+  *::before,
+  *::after {
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .01ms !important;
+  }
+}

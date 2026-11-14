@@ -1,5 +1,7 @@
+"use client";
+
 import { useState } from "react";
-import { useCart } from "../App";
+import { useCart } from "../store";
 import { sessionStore } from "../session";
 import { toast } from "../toast";
 import { track } from "../lib/activity";

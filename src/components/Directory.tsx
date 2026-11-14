@@ -1,3 +1,6 @@
+"use client";
+
+import Link from "next/link";
 import { useCatalog } from "../lib/catalog";
 import { track } from "../lib/activity";
 
@@ -21,12 +24,12 @@ export function Directory() {
 
         <div className="directory-grid">
           {categories.map((stall, i) => (
-            <a
+            <Link
               key={stall.id}
               className={`stall${stall.featured ? " stall--feature" : ""} reveal`}
               data-stall={stall.id}
               style={{ "--reveal-delay": `${(i % 3) * 0.06}s` } as React.CSSProperties}
-              href={`#/category/${stall.id}`}
+              href={`/stall/${stall.id}`}
               onClick={() => onOpen(stall.name)}
             >
               <div>
@@ -52,7 +55,7 @@ export function Directory() {
               <span className="stall__link">
                 View menu &amp; order <i className="fa-solid fa-arrow-right"></i>
               </span>
-            </a>
+            </Link>
           ))}
         </div>
       </div>

@@ -1,4 +1,7 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+"use client";
+
+import { useEffect, useRef, useState } from "react";
+import Link from "next/link";
 import { useCatalog } from "../lib/catalog";
 import { track } from "../lib/activity";
 
@@ -16,10 +19,10 @@ export function Hero() {
   const [tabHidden, setTabHidden] = useState(false);
   const touchX = useRef(0);
 
-  const prefersReduced = useMemo(
-    () => window.matchMedia("(prefers-reduced-motion: reduce)").matches,
-    []
-  );
+  const [prefersReduced, setPrefersReduced] = useState(false);
+  useEffect(() => {
+    setPrefersReduced(window.matchMedia("(prefers-reduced-motion: reduce)").matches);
+  }, []);
   const paused = prefersReduced || hoverPaused || tabHidden;
 
   const goTo = (i: number) => {
@@ -112,13 +115,13 @@ export function Hero() {
                 <div className="hero__ctas">
                   {slide.ctas.map((cta) =>
                     cta.variant === "primary" ? (
-                      <a key={cta.label} href={cta.href} className="btn btn--primary">
+                      <Link key={cta.label} href={cta.href} className="btn btn--primary">
                         <i className={`fa-solid ${cta.icon}`}></i> {cta.label}
-                      </a>
+                      </Link>
                     ) : (
-                      <a key={cta.label} href={cta.href} className="btn btn--ghost">
+                      <Link key={cta.label} href={cta.href} className="btn btn--ghost">
                         {cta.label} <i className={`fa-solid ${cta.icon}`}></i>
-                      </a>
+                      </Link>
                     )
                   )}
                 </div>

@@ -1,11 +1,15 @@
-import { useCart } from "../App";
+"use client";
+
+import Link from "next/link";
+import { useCart } from "../store";
 import { useScrollLock } from "../hooks/useScrollLock";
 import { useCatalog } from "../lib/catalog";
 
 const PAGES = [
-  { label: "Home", href: "#/" },
-  { label: "About", href: "#/about" },
-  { label: "Sign in", href: "#/signin" },
+  { label: "Home", href: "/" },
+  { label: "Mall directory", href: "/#directory" },
+  { label: "Hot picks", href: "/#picks" },
+  { label: "About", href: "/about" },
 ];
 
 export function MobileNav() {
@@ -17,23 +21,27 @@ export function MobileNav() {
     <nav className={`mobile-nav${mobileNavOpen ? " is-open" : ""}`} id="mobileNav" aria-label="Mobile">
       <div className="mnav-scroll">
         {PAGES.map((link) => (
-          <a key={link.href} className="mnav-link" href={link.href} onClick={() => setMobileNavOpen(false)}>
+          <Link
+            key={link.href}
+            className="mnav-link"
+            href={link.href}
+            onClick={() => setMobileNavOpen(false)}
+          >
             {link.label} <i className="fa-solid fa-arrow-right"></i>
-          </a>
+          </Link>
         ))}
-        <a className="mnav-link" href="#directory" onClick={() => setMobileNavOpen(false)}>
-          Mall directory <i className="fa-solid fa-arrow-right"></i>
-        </a>
-        <a className="mnav-link" href="#picks" onClick={() => setMobileNavOpen(false)}>
-          Hot picks <i className="fa-solid fa-arrow-right"></i>
-        </a>
 
         <span className="mnav-sub">Stalls</span>
         <div className="mnav-stalls">
           {categories.map((c) => (
-            <a key={c.id} href={`#/category/${c.id}`} className="mnav-stall" onClick={() => setMobileNavOpen(false)}>
+            <Link
+              key={c.id}
+              href={`/stall/${c.id}`}
+              className="mnav-stall"
+              onClick={() => setMobileNavOpen(false)}
+            >
               <i className={`fa-solid ${c.icon}`}></i> {c.shortName}
-            </a>
+            </Link>
           ))}
         </div>
 
@@ -48,13 +56,13 @@ export function MobileNav() {
             <i className="fa-solid fa-basket-shopping"></i> Basket
           </button>
           {session ? (
-            <a href="#/about" className="btn btn--primary" onClick={() => setMobileNavOpen(false)}>
+            <Link href="/about" className="btn btn--primary" onClick={() => setMobileNavOpen(false)}>
               <i className="fa-solid fa-user"></i> My orders
-            </a>
+            </Link>
           ) : (
-            <a href="#/signin" className="btn btn--primary" onClick={() => setMobileNavOpen(false)}>
+            <Link href="/signin" className="btn btn--primary" onClick={() => setMobileNavOpen(false)}>
               <i className="fa-solid fa-arrow-right-to-bracket"></i> Sign in
-            </a>
+            </Link>
           )}
         </div>
       </div>

@@ -1,6 +1,8 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+"use client";
+
+import { useEffect, useRef, useState } from "react";
+import Link from "next/link";
 import { useCatalog } from "../lib/catalog";
-import { navigate } from "../router";
 
 const AUTOPLAY_MS = 5200;
 const SWIPE_THRESHOLD = 42;
@@ -12,10 +14,10 @@ export function Gallery() {
   const [paused, setPaused] = useState(false);
   const touchX = useRef(0);
 
-  const prefersReduced = useMemo(
-    () => window.matchMedia("(prefers-reduced-motion: reduce)").matches,
-    []
-  );
+  const [prefersReduced, setPrefersReduced] = useState(false);
+  useEffect(() => {
+    setPrefersReduced(window.matchMedia("(prefers-reduced-motion: reduce)").matches);
+  }, []);
   const autoplayOn = !prefersReduced && !paused;
 
   const goTo = (i: number) => {
@@ -107,7 +109,7 @@ export function Gallery() {
               aria-hidden="true"
               style={{
                 animation: `hero-progress ${AUTOPLAY_MS}ms linear forwards`,
-                animationPlayState: paused || document.hidden ? "paused" : "running",
+                animationPlayState: paused ? "paused" : "running",
               }}
             />
           )}
@@ -115,9 +117,9 @@ export function Gallery() {
 
         <p className="gallery__cta">
           Hungry from looking?{" "}
-          <button className="link-btn" onClick={() => navigate("#/category/build-a-belly")}>
+          <Link className="link-btn" href="/stall/build-a-belly">
             Build your box
-          </button>
+          </Link>
         </p>
       </div>
     </section>

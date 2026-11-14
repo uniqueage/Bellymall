@@ -1,5 +1,7 @@
+"use client";
+
 import { useCatalog } from "../lib/catalog";
-import { useCart } from "../App";
+import { useCart } from "../store";
 import { toast } from "../toast";
 import { track } from "../lib/activity";
 

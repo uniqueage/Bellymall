@@ -1,8 +1,10 @@
+"use client";
+
 import { useEffect, useMemo, useRef, useState, useSyncExternalStore } from "react";
+import { useRouter } from "next/navigation";
 import { useCatalog } from "../lib/catalog";
-import { navigate } from "../router";
 import { track } from "../lib/activity";
-import { naira } from "../App";
+import { naira } from "../store";
 import { useScrollLock } from "../hooks/useScrollLock";
 
 /* ============================================================
@@ -48,6 +50,7 @@ type DishHit = { id: string; name: string; price: number; categoryId: string; ca
 
 export function SearchOverlay() {
   const isOpen = useSearchOpen();
+  const router = useRouter();
   const { categories } = useCatalog();
   const [q, setQ] = useState("");
   const inputRef = useRef<HTMLInputElement | null>(null);
@@ -116,7 +119,7 @@ export function SearchOverlay() {
   const pick = (categoryId: string, label: string) => {
     track({ kind: "search", label: term, meta: { picked: label } });
     closeSearch();
-    navigate(`#/category/${categoryId}`);
+    router.push(`/stall/${categoryId}`);
   };
 
   const onSubmit = (e: React.FormEvent) => {

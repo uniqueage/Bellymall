@@ -1,5 +1,8 @@
+"use client";
+
 import { useMemo, useEffect } from "react";
-import { useCart, naira } from "../App";
+import Link from "next/link";
+import { useCart, naira } from "../store";
 import { useCatalog, findCategoryIn } from "../lib/catalog";
 import type { MenuItem } from "../data";
 import { toast } from "../toast";
@@ -66,11 +69,11 @@ export function CategoryPage({ id }: { id: string }) {
           <i className="fa-solid fa-compass"></i>
           <h1 className="section-title">This stall moved.</h1>
           <p className="section-sub">
-            We couldn't find “{id}”. The directory below has every open stall in the mall.
+            We couldn&apos;t find &ldquo;{id}&rdquo;. The directory has every open stall in the mall.
           </p>
-          <a className="btn btn--primary" href="#directory">
+          <Link className="btn btn--primary" href="/#directory">
             <i className="fa-solid fa-store"></i> Back to the directory
-          </a>
+          </Link>
         </div>
       </section>
     );
@@ -85,9 +88,9 @@ export function CategoryPage({ id }: { id: string }) {
         <div className="cat-hero__scrim" aria-hidden="true"></div>
         <div className="container cat-hero__content">
           <nav className="crumbs" aria-label="Breadcrumb">
-            <a href="#/">Home</a>
+            <Link href="/">Home</Link>
             <i className="fa-solid fa-angle-right"></i>
-            <a href="#directory">Directory</a>
+            <Link href="/#directory">Directory</Link>
             <i className="fa-solid fa-angle-right"></i>
             <span aria-current="page">{category.shortName}</span>
           </nav>
@@ -135,7 +138,7 @@ export function CategoryPage({ id }: { id: string }) {
           </div>
           <div className="related-grid">
             {related.map((c) => (
-              <a key={c.id} className="related-card" href={`#/category/${c.id}`}>
+              <Link key={c.id} className="related-card" href={`/stall/${c.id}`}>
                 <img src={c.image} alt={c.imageAlt} loading="lazy" />
                 <div className="related-card__body">
                   <strong>{c.name}</strong>
@@ -143,7 +146,7 @@ export function CategoryPage({ id }: { id: string }) {
                     {c.menu.length} dishes <i className="fa-solid fa-arrow-right"></i>
                   </span>
                 </div>
-              </a>
+              </Link>
             ))}
           </div>
         </div>

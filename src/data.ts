@@ -38,8 +38,8 @@ export const HERO_SLIDES: HeroSlide[] = [
     titlePost: ".",
     sub: "From street cravings to chef specials — everything you love under one roof, delivered hot in minutes.",
     ctas: [
-      { label: "Start an order", icon: "fa-bag-shopping", href: "#picks", variant: "primary" },
-      { label: "Explore the mall", icon: "fa-arrow-right", href: "#directory", variant: "ghost" },
+      { label: "Start an order", icon: "fa-bag-shopping", href: "/#picks", variant: "primary" },
+      { label: "Explore the mall", icon: "fa-arrow-right", href: "/#directory", variant: "ghost" },
     ],
     trust: [
       { icon: "fa-star", text: "4.9 rated by foodies" },
@@ -58,8 +58,8 @@ export const HERO_SLIDES: HeroSlide[] = [
     titlePost: " back.",
     sub: "Smooth, rich and unapologetically generous — served steaming with the swallow of your choice.",
     ctas: [
-      { label: "Order comfort food", icon: "fa-bowl-food", href: "#/category/swallow-hall", variant: "primary" },
-      { label: "Visit the Swallow Hall", icon: "fa-arrow-right", href: "#/category/swallow-hall", variant: "ghost" },
+      { label: "Order comfort food", icon: "fa-bowl-food", href: "/stall/swallow-hall", variant: "primary" },
+      { label: "Visit the Swallow Hall", icon: "fa-arrow-right", href: "/stall/swallow-hall", variant: "ghost" },
     ],
     trust: [
       { icon: "fa-leaf", text: "Cooked fresh to order" },
@@ -77,8 +77,8 @@ export const HERO_SLIDES: HeroSlide[] = [
     titlePost: " fire.",
     sub: "Suya-spiced skewers flame-kissed and dusted with yaji — from the coals to your door before the smoke settles.",
     ctas: [
-      { label: "Grab suya", icon: "fa-drumstick-bite", href: "#/category/protein-factory", variant: "primary" },
-      { label: "Protein Factory", icon: "fa-arrow-right", href: "#/category/protein-factory", variant: "ghost" },
+      { label: "Grab suya", icon: "fa-drumstick-bite", href: "/stall/protein-factory", variant: "primary" },
+      { label: "Protein Factory", icon: "fa-arrow-right", href: "/stall/protein-factory", variant: "ghost" },
     ],
     trust: [
       { icon: "fa-fire", text: "Charcoal-grilled daily" },
@@ -96,8 +96,8 @@ export const HERO_SLIDES: HeroSlide[] = [
     titlePost: " regrets.",
     sub: "Warm puff-puff boxes, meat pies and chin chin — the crunchiest street in the whole mall.",
     ctas: [
-      { label: "Sweeten the day", icon: "fa-cookie-bite", href: "#/category/snack-street", variant: "primary" },
-      { label: "Walk Snack Street", icon: "fa-arrow-right", href: "#/category/snack-street", variant: "ghost" },
+      { label: "Sweeten the day", icon: "fa-cookie-bite", href: "/stall/snack-street", variant: "primary" },
+      { label: "Walk Snack Street", icon: "fa-arrow-right", href: "/stall/snack-street", variant: "ghost" },
     ],
     trust: [
       { icon: "fa-clock", text: "Fried to order" },

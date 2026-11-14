@@ -56,7 +56,9 @@ export function track({ kind, label, meta, path }: TrackPayload) {
     kind,
     label: label ?? null,
     meta: meta ?? null,
-    path: path ?? (typeof window !== "undefined" ? window.location.hash : null),
+    path:
+      path ??
+      (typeof window !== "undefined" ? window.location.pathname + window.location.search : null),
   };
   // Fire-and-forget; never block or break the storefront.
   getSupabase()

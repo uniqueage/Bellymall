@@ -1,11 +1,15 @@
+"use client";
+
 import { useEffect, useState } from "react";
-import { useCart, naira, type Order } from "../App";
+import Link from "next/link";
+import { useCart, useOrders, naira } from "../store";
 import { useCatalog } from "../lib/catalog";
 import { backendReady } from "../lib/supabaseClient";
 import { fetchOrdersByEmail, type DbOrder } from "../lib/activity";
 
-export function AboutPage({ orders }: { orders: Order[] }) {
+export function AboutPage() {
   const { session } = useCart();
+  const orders = useOrders();
   const { categories } = useCatalog();
   const [tab, setTab] = useState<"orders" | "stalls">("orders");
   const [dbOrders, setDbOrders] = useState<DbOrder[]>([]);
@@ -39,12 +43,12 @@ export function AboutPage({ orders }: { orders: Order[] }) {
               </p>
             ) : (
               <div className="about-hero__actions">
-                <a className="btn btn--primary" href="#directory">
+                <Link className="btn btn--primary" href="/#directory">
                   <i className="fa-solid fa-store"></i> Explore the stalls
-                </a>
-                <a className="btn btn--dark" href="#/category/build-a-belly">
+                </Link>
+                <Link className="btn btn--dark" href="/stall/build-a-belly">
                   <i className="fa-solid fa-box-open"></i> Try Build-a-belly
-                </a>
+                </Link>
               </div>
             )}
           </div>
@@ -189,7 +193,7 @@ export function AboutPage({ orders }: { orders: Order[] }) {
           {tab === "stalls" && (
             <div className="stall-list-grid">
               {categories.map((c) => (
-                <a key={c.id} className="related-card" href={`#/category/${c.id}`}>
+                <Link key={c.id} className="related-card" href={`/stall/${c.id}`}>
                   <img src={c.image} alt={c.imageAlt} loading="lazy" />
                   <div className="related-card__body">
                     <strong>{c.name}</strong>
@@ -197,7 +201,7 @@ export function AboutPage({ orders }: { orders: Order[] }) {
                       {c.menu.length} dishes <i className="fa-solid fa-arrow-right"></i>
                     </span>
                   </div>
-                </a>
+                </Link>
               ))}
             </div>
           )}

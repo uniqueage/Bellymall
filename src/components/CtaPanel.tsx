@@ -1,5 +1,7 @@
+"use client";
+
 import { useMemo } from "react";
-import { useCart } from "../App";
+import { useCart } from "../store";
 import { toast } from "../toast";
 
 export function CtaPanel() {
@@ -33,7 +35,7 @@ export function CtaPanel() {
               <i className="fa-solid fa-bag-shopping"></i>
               {count > 0 ? `Checkout (${count})` : "Order online"}
             </button>
-            <a href="#directory" className="btn btn--dark">
+            <a href="/#directory" className="btn btn--dark">
               Browse the directory
             </a>
           </div>

@@ -31,6 +31,11 @@ function getSnapshot() {
   return session;
 }
 
+/** Server + first hydration pass always start signed out, then sync. */
+function getServerSnapshot(): Session | null {
+  return null;
+}
+
 function signIn(email: string) {
   const name = email
     .split("@")[0]
@@ -58,6 +63,7 @@ function signOut() {
 export const sessionStore = {
   subscribe,
   getSnapshot,
+  getServerSnapshot,
   signIn,
   signOut,
 };

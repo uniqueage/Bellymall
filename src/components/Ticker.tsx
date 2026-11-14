@@ -1,3 +1,5 @@
+"use client";
+
 import { useSettings } from "../lib/settings";
 
 const FALLBACK_MESSAGE =

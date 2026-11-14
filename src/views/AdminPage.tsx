@@ -1,6 +1,8 @@
+"use client";
+
 import { useCallback, useEffect, useState } from "react";
 import { getSupabase, backendReady } from "../lib/supabaseClient";
-import { useCart } from "../App";
+import { useCart } from "../store";
 import { toast } from "../toast";
 import { Overview } from "./admin/Overview";
 import { Products } from "./admin/Products";
@@ -68,8 +70,9 @@ export function AdminPage() {
           <i className="fa-solid fa-plug-circle-xmark"></i>
           <h1 className="section-title">Backend not connected</h1>
           <p className="section-sub">
-            Add <code>VITE_SUPABASE_URL</code> and <code>VITE_SUPABASE_ANON_KEY</code> to your environment, then run
-            the SQL in <code>supabase/schema.sql</code> inside the Supabase SQL editor.
+            Add <code>NEXT_PUBLIC_SUPABASE_URL</code> and <code>NEXT_PUBLIC_SUPABASE_ANON_KEY</code> to your
+            environment (Vercel → Settings → Environment Variables), then run the SQL in{" "}
+            <code>supabase/schema.sql</code> inside the Supabase SQL editor.
           </p>
         </div>
       </section>
