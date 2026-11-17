@@ -1036,7 +1036,7 @@ section[id] { scroll-margin-top: 92px; }
 }
 @media (min-width: 861px) {
   .step:not(:last-child)::after {
-    content: '\\f061';
+    content: '\f061';
     font-family: 'Font Awesome 6 Free';
     font-weight: 900;
     position: absolute;
@@ -1496,7 +1496,7 @@ section[id] { scroll-margin-top: 92px; }
   transition: color .2s, padding-left .25s var(--ease);
   display: inline-flex; align-items: center; gap: .5rem;
 }
-.footer__links a::before { content: '\\f105'; font-family: 'Font Awesome 6 Free'; font-weight: 900; color: var(--cocoa); font-size: .8em; }
+.footer__links a::before { content: '\f105'; font-family: 'Font Awesome 6 Free'; font-weight: 900; color: var(--cocoa); font-size: .8em; }
 .footer__links a:hover { color: var(--cream); padding-left: .3rem; }
 .footer__contact { display: grid; gap: .55rem; color: rgba(247,240,230,.68); font-size: var(--fs-400); }
 .footer__contact span { display: inline-flex; align-items: center; gap: .6rem; }
@@ -1800,6 +1800,11 @@ section[id] { scroll-margin-top: 92px; }
   .gallery__stage { aspect-ratio: 4 / 3; }
   .mnav-stalls { grid-template-columns: 1fr; }
   .basket-bar__total { font-size: var(--fs-400); }
+}
+
+/* keep the side arrows clear of the hero copy until the gutter fits them */
+@media (min-width: 641px) and (max-width: 1290px) {
+  .hero__content { padding-inline: 4.25rem; }
 }
 
 /* ============================================================

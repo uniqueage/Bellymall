@@ -1,7 +1,7 @@
 import type { MetadataRoute } from "next";
 import { CATEGORIES } from "../src/data";
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://bellymall.vercel.app";
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://bellymall-ng.vercel.app";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const now = new Date();

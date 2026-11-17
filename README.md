@@ -94,8 +94,8 @@ bun run typecheck
    `next build` and needs no extra configuration.
 3. Add the environment variables from step 2 above under **Settings → Environment Variables**
    (optional — the site runs fine without them).
-4. Optionally set `NEXT_PUBLIC_SITE_URL` to the production domain so canonical URLs, OG tags
-   and the sitemap point at it, then redeploy.
+4. Canonical URLs, OG tags and the sitemap default to **https://bellymall-ng.vercel.app**. If the
+   project is served from a different domain, set `NEXT_PUBLIC_SITE_URL` to that origin and redeploy.
 
 ## Search
 

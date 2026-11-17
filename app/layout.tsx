@@ -2,7 +2,7 @@ import type { Metadata, Viewport } from "next";
 import "./globals.css";
 import { AppShell } from "../src/App";
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://bellymall.vercel.app";
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://bellymall-ng.vercel.app";
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
