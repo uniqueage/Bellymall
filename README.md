@@ -77,6 +77,31 @@ select id, email from auth.users where email = 'someone@example.com';
 | Settings | Announcement ticker, delivery fee, free-delivery threshold, contact details, socials |
 | Activity | Realtime stream of customer actions with filters and search |
 
+## Testing the admin dashboard locally (no live data)
+
+`mocks/supabase-mock.mjs` is a small local stand-in for Supabase — auth, REST tables and storage —
+seeded with demo content. Nothing leaves your machine, so you can click through every dashboard
+section, including saves and deletes, without touching the real project.
+
+```bash
+bun run mock:supabase        # mock API on http://127.0.0.1:54399
+
+NEXT_PUBLIC_SUPABASE_URL=http://127.0.0.1:54399 \
+NEXT_PUBLIC_SUPABASE_ANON_KEY=mock-anon-key \
+bun run dev
+```
+
+Open `/admin` and sign in as `owner@bellymall.ng` with any password of 8+ characters (for example
+`bellymall`). All nine sections load from the fixtures: 7 stalls, 10 dishes, 4 sellers, 5 orders and
+10 activity events.
+
+- `GET http://127.0.0.1:54399/__admin/state` — dump the in-memory tables
+- `POST http://127.0.0.1:54399/__admin/reset` — restore the seed data
+
+Restart the dev server without those two variables to point back at the real Supabase project.
+Realtime websockets are not emulated, so the Orders and Activity live feeds only show whatever the
+normal queries return.
+
 ## Development
 
 ```bash

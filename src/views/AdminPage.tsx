@@ -26,6 +26,7 @@ export function AdminPage() {
   const [tab, setTab] = useState<Tab>("overview");
   const [query, setQuery] = useState("");
   const [isAdmin, setIsAdmin] = useState<boolean | null>(null);
+  const [adminEmail, setAdminEmail] = useState<string | null>(null);
   const [booting, setBooting] = useState(true);
 
   /* ------------ auth gate ------------ */
@@ -38,6 +39,7 @@ export function AdminPage() {
     const sb = getSupabase();
     const { data } = await sb.auth.getSession();
     const uid = data.session?.user?.id;
+    setAdminEmail(data.session?.user?.email ?? null);
     if (!uid) {
       setIsAdmin(false);
       setBooting(false);
@@ -115,8 +117,8 @@ export function AdminPage() {
             Admin <em>dashboard</em>
           </h1>
           <p className="section-sub">
-            Signed in as {session?.email}. Run the whole mall — products, stalls, sellers, orders, customers and
-            content — from here.
+            Signed in as {adminEmail ?? session?.email ?? "admin"}. Run the whole mall — products, stalls, sellers,
+            orders, customers and content — from here.
           </p>
           <div className="tab-row" role="tablist" aria-label="Admin sections">
             {TABS.map(([id, label, icon]) => (
