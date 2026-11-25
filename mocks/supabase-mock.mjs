@@ -92,8 +92,8 @@ const seed = () => ({
       key: "gallery_slides",
       value: [
         {
-          image: "/images/rice-feast-pans.jpg",
-          alt: "A full table spread of Bellymall dishes",
+          image: "/images/african-family-spread.jpg",
+          alt: "A spread of fufu, beans and fish stew at Hall One",
           caption: "The spread at Hall One",
           where: "Build-a-belly box",
         },
@@ -140,7 +140,7 @@ const seed = () => ({
     { id: "grain-district", name: "Grain district & moi-moi corner", short_name: "Grain district", slogan: "Wholesome & steamed", blurb: "Jollof, fried rice, ofada and steamed moi-moi — the grain heart of the mall.", image: "/images/jollof-plantain.jpg", image_alt: "A bowl of seasoned rice with sides", icon: "fa-seedling", featured: false, sort_order: 2 },
     { id: "protein-factory", name: "Protein factory", short_name: "Protein factory", slogan: "Power up", blurb: "Charcoal grills working round the clock — suya, chicken, fish and steak.", image: "/images/meat-skewers.jpg", image_alt: "Spiced skewers grilling over charcoal", icon: "fa-drumstick-bite", featured: false, sort_order: 3 },
     { id: "snack-street", name: "Snack street", short_name: "Snack street", slogan: "Quick & crunchy", blurb: "Fried to order and gone in minutes — puff-puff, chin chin, samosa and bakery treats.", image: "/images/puff-puff.jpg", image_alt: "Golden fried dough puffs dusted with sugar", icon: "fa-cookie-bite", featured: false, sort_order: 4 },
-    { id: "porridge-yard", name: "Porridge & tubers yard", short_name: "Porridge yard", slogan: "Hearty & rustic", blurb: "One-pot wonders from the yard — yam, plantain and beans slow-cooked with palm oil.", image: "/images/jollof-pot.jpg", image_alt: "A hearty pot of porridge simmering", icon: "fa-carrot", featured: false, sort_order: 5 },
+    { id: "porridge-yard", name: "Porridge & tubers yard", short_name: "Porridge yard", slogan: "Hearty & rustic", blurb: "One-pot wonders from the yard — yam, plantain and beans slow-cooked with palm oil.", image: "/images/yam-and-plantain-spread.jpg", image_alt: "Boiled yam, plantain and fish stew laid out on a table", icon: "fa-carrot", featured: false, sort_order: 5 },
     { id: "extras-sides", name: "The extras & sides", short_name: "Extras & sides", slogan: "Perfect companions", blurb: "The little things that finish a plate — coleslaw, dodo, wings and chilled drinks.", image: "/images/chicken-salad.jpg", image_alt: "A colourful bowl of fresh salad sides", icon: "fa-bowl-food", featured: false, sort_order: 6 },
   ],
 

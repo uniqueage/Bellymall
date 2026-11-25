@@ -64,7 +64,7 @@ update public.categories target
     ('grain-district', '/images/jollof-plantain.jpg', 'Jollof rice plated with golden fried plantain'),
     ('protein-factory', '/images/meat-skewers.jpg', 'Suya skewers with yaji pepper fresh off the grill'),
     ('snack-street', '/images/puff-puff.jpg', 'Golden puff-puff fried fresh and piled in a bowl'),
-    ('porridge-yard', '/images/jollof-pot.jpg', 'A one-pot stew simmering over firewood'),
+    ('porridge-yard', '/images/yam-and-plantain-spread.jpg', 'Boiled yam, plantain and fish stew laid out on a table'),
     ('extras-sides', '/images/chicken-salad.jpg', 'A colourful grilled chicken salad on a wooden board')
   ) as mapping(id, image, image_alt)
  where target.id = mapping.id;
@@ -88,15 +88,15 @@ update public.site_content target
       left join (values
         ('hero_slides', 0, '/images/rice-feast-pans.jpg', 'A spread of seasoned rice, grilled chicken and plantain across iron pans'),
         ('hero_slides', 1, '/images/egusi-soup.jpg', 'A bowl of rich melon-seed egusi soup'),
-        ('hero_slides', 2, '/images/meat-skewers.jpg', 'Charcoal-grilled skewers dusted with yaji pepper'),
+        ('hero_slides', 2, '/images/suya-charcoal-grill.jpg', 'Rows of suya skewers grilling over glowing charcoal'),
         ('hero_slides', 3, '/images/puff-puff.jpg', 'Golden puff-puff fried fresh and piled in a bowl'),
-        ('gallery_slides', 0, '/images/rice-feast-pans.jpg', 'A spread of rice dishes with chicken and plantain'),
+        ('gallery_slides', 0, '/images/african-family-spread.jpg', 'A spread of fufu, beans and fish stew at Hall One'),
         ('gallery_slides', 1, '/images/meat-skewers.jpg', 'Suya skewers with yaji pepper fresh off the coals'),
         ('gallery_slides', 2, '/images/soup-leaf-bowl.jpg', 'A rich bowl of soup served in a patterned bowl'),
-        ('gallery_slides', 3, '/images/puff-puff.jpg', 'Golden puff-puff fried to order'),
+        ('gallery_slides', 3, '/images/samosa.jpg', 'Crispy golden samosas fresh from the fryer'),
         ('gallery_slides', 4, '/images/grilled-chicken-spiced.jpg', 'Peppered grilled chicken with fresh chillies'),
         ('gallery_slides', 5, '/images/croissant.jpg', 'Freshly baked butter croissants'),
-        ('gallery_slides', 6, '/images/jollof-rice-pan.jpg', 'A pan of seasoned rice with sides')
+        ('gallery_slides', 6, '/images/jollof-chicken-plate.jpg', 'A plate of jollof rice with grilled chicken and peppers')
       ) as mapping(key, sort_index, image, alt)
         on mapping.key = sc.key and mapping.sort_index = element.ord - 1
      where sc.key in ('hero_slides', 'gallery_slides')
@@ -107,8 +107,6 @@ update public.site_content target
 commit;
 
 -- 3b) ONE DISH RENAMED to match its photo -----------------------------
--- The old name promised "bites"; the photography is a whole peppered
--- steak, so the catalog and the live row now agree.
 update public.menu_items
    set name = 'Peppered steak',
        "desc" = 'Seared steak in a black pepper glaze.'

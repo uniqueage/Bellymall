@@ -65,8 +65,8 @@ export const HERO_SLIDES: HeroSlide[] = [
     ],
   },
   {
-    image: "/images/meat-skewers.jpg",
-    alt: "Charcoal-grilled skewers dusted with yaji pepper",
+    image: "/images/suya-charcoal-grill.jpg",
+    alt: "Rows of suya skewers grilling over glowing charcoal",
     kickerIcon: "fa-fire-flame-curved",
     kicker: "Straight off the grill",
     titlePre: "Suya smoke. ",
@@ -479,8 +479,8 @@ export const CATEGORIES: Category[] = [
     slogan: "Hearty & rustic",
     blurb:
       "One-pot wonders from the yard — yam, plantain and beans slow-cooked with palm oil, pepper and patience.",
-    image: img("jollof-pot"),
-    imageAlt: "A one-pot stew simmering over firewood",
+    image: img("yam-and-plantain-spread"),
+    imageAlt: "Boiled yam, plantain and fish stew laid out on a table",
     icon: "fa-carrot",
     menu: [
       {
@@ -647,8 +647,8 @@ export type GallerySlide = {
 
 export const GALLERY_SLIDES: GallerySlide[] = [
   {
-    image: img("rice-feast-pans"),
-    alt: "A spread of rice dishes with chicken and plantain",
+    image: img("african-family-spread"),
+    alt: "A spread of fufu, beans and fish stew at Hall One",
     caption: "The spread at Hall One",
     where: "Build-a-belly box",
   },
@@ -665,8 +665,8 @@ export const GALLERY_SLIDES: GallerySlide[] = [
     where: "Swallow hall",
   },
   {
-    image: img("puff-puff"),
-    alt: "Golden puff-puff fried to order",
+    image: img("samosa"),
+    alt: "Crispy golden samosas fresh from the fryer",
     caption: "Fried to order, gone in minutes",
     where: "Snack street",
   },
@@ -683,8 +683,8 @@ export const GALLERY_SLIDES: GallerySlide[] = [
     where: "Snack street",
   },
   {
-    image: img("jollof-rice-pan"),
-    alt: "A pan of seasoned rice with sides",
+    image: img("jollof-chicken-plate"),
+    alt: "A plate of jollof rice with grilled chicken and peppers",
     caption: "Grains done generously",
     where: "Grain district",
   },
