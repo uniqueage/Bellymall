@@ -141,8 +141,7 @@ export const ICON_CHOICES = [
 ];
 
 /** Placeholder art for a brand-new stall until a photo is uploaded. */
-export const PLACEHOLDER_IMAGE =
-  "https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=1400&q=80";
+export const PLACEHOLDER_IMAGE = "/images/rice-feast-pans.jpg";
 
 export type Sb = ReturnType<typeof getSupabase>;
 

@@ -23,10 +23,10 @@ export const metadata: Metadata = {
     url: "/",
     images: [
       {
-        url: "https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=1200&q=80",
+        url: "/images/rice-feast-pans.jpg",
         width: 1200,
         height: 630,
-        alt: "A generous spread of freshly cooked dishes",
+        alt: "A spread of seasoned rice, grilled chicken and plantain",
       },
     ],
   },

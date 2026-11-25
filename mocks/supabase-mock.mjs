@@ -49,7 +49,7 @@ const seed = () => ({
       key: "hero_slides",
       value: [
         {
-          image: "https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=1800&q=80",
+          image: "/images/rice-feast-pans.jpg",
           alt: "A generous spread of freshly cooked dishes on a table",
           kickerIcon: "fa-store",
           kicker: "Bellymall food hall",
@@ -68,7 +68,7 @@ const seed = () => ({
           ],
         },
         {
-          image: "https://images.unsplash.com/photo-1565557623262-b51c2513a641?auto=format&fit=crop&w=1800&q=80",
+          image: "/images/egusi-soup.jpg",
           alt: "A rich bowl of egusi soup served with swallow",
           kickerIcon: "fa-utensil-spoon",
           kicker: "Today at the Swallow Hall",
@@ -92,19 +92,19 @@ const seed = () => ({
       key: "gallery_slides",
       value: [
         {
-          image: "https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=1600&q=80",
+          image: "/images/rice-feast-pans.jpg",
           alt: "A full table spread of Bellymall dishes",
           caption: "The spread at Hall One",
           where: "Build-a-belly box",
         },
         {
-          image: "https://images.unsplash.com/photo-1555939594-58d7cb561ad1?auto=format&fit=crop&w=1600&q=80",
+          image: "/images/meat-skewers.jpg",
           alt: "Suya skewers fresh off the coals",
           caption: "Straight off the coals",
           where: "Protein factory",
         },
         {
-          image: "https://images.unsplash.com/photo-1565557623262-b51c2513a641?auto=format&fit=crop&w=1600&q=80",
+          image: "/images/soup-leaf-bowl.jpg",
           alt: "A rich bowl of egusi with swallow",
           caption: "The comfort classic",
           where: "Swallow hall",
@@ -135,26 +135,26 @@ const seed = () => ({
   ],
 
   categories: [
-    { id: "build-a-belly", name: "Build-a-belly box", short_name: "Build-a-belly", slogan: "Craft your feast", blurb: "Pick a base, a protein and two sides — then let the mall assemble your perfect box.", image: "https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=1400&q=80", image_alt: "A generous spread of dishes ready to be boxed up", icon: "fa-box-open", featured: true, sort_order: 0 },
-    { id: "swallow-hall", name: "The swallow hall", short_name: "Swallow hall", slogan: "Smooth & satisfying", blurb: "Slow-simmered soups and the swallow of your choice — eba, fufu, semo or pounded yam.", image: "https://images.unsplash.com/photo-1565557623262-b51c2513a641?auto=format&fit=crop&w=1400&q=80", image_alt: "A rich pot of soup served with swallow", icon: "fa-utensil-spoon", featured: false, sort_order: 1 },
-    { id: "grain-district", name: "Grain district & moi-moi corner", short_name: "Grain district", slogan: "Wholesome & steamed", blurb: "Jollof, fried rice, ofada and steamed moi-moi — the grain heart of the mall.", image: "https://images.unsplash.com/photo-1512058564366-18510be2db19?auto=format&fit=crop&w=1400&q=80", image_alt: "A bowl of seasoned rice with sides", icon: "fa-seedling", featured: false, sort_order: 2 },
-    { id: "protein-factory", name: "Protein factory", short_name: "Protein factory", slogan: "Power up", blurb: "Charcoal grills working round the clock — suya, chicken, fish and steak.", image: "https://images.unsplash.com/photo-1555939594-58d7cb561ad1?auto=format&fit=crop&w=1400&q=80", image_alt: "Spiced skewers grilling over charcoal", icon: "fa-drumstick-bite", featured: false, sort_order: 3 },
-    { id: "snack-street", name: "Snack street", short_name: "Snack street", slogan: "Quick & crunchy", blurb: "Fried to order and gone in minutes — puff-puff, chin chin, samosa and bakery treats.", image: "https://images.unsplash.com/photo-1551024601-bec78aea704b?auto=format&fit=crop&w=1400&q=80", image_alt: "Golden fried dough puffs dusted with sugar", icon: "fa-cookie-bite", featured: false, sort_order: 4 },
-    { id: "porridge-yard", name: "Porridge & tubers yard", short_name: "Porridge yard", slogan: "Hearty & rustic", blurb: "One-pot wonders from the yard — yam, plantain and beans slow-cooked with palm oil.", image: "https://images.unsplash.com/photo-1547592166-23ac45744acd?auto=format&fit=crop&w=1400&q=80", image_alt: "A hearty pot of porridge simmering", icon: "fa-carrot", featured: false, sort_order: 5 },
-    { id: "extras-sides", name: "The extras & sides", short_name: "Extras & sides", slogan: "Perfect companions", blurb: "The little things that finish a plate — coleslaw, dodo, wings and chilled drinks.", image: "https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?auto=format&fit=crop&w=1400&q=80", image_alt: "A colourful bowl of fresh salad sides", icon: "fa-bowl-food", featured: false, sort_order: 6 },
+    { id: "build-a-belly", name: "Build-a-belly box", short_name: "Build-a-belly", slogan: "Craft your feast", blurb: "Pick a base, a protein and two sides — then let the mall assemble your perfect box.", image: "/images/rice-feast-pans.jpg", image_alt: "A generous spread of dishes ready to be boxed up", icon: "fa-box-open", featured: true, sort_order: 0 },
+    { id: "swallow-hall", name: "The swallow hall", short_name: "Swallow hall", slogan: "Smooth & satisfying", blurb: "Slow-simmered soups and the swallow of your choice — eba, fufu, semo or pounded yam.", image: "/images/green-soup-sides.jpg", image_alt: "A rich pot of soup served with swallow", icon: "fa-utensil-spoon", featured: false, sort_order: 1 },
+    { id: "grain-district", name: "Grain district & moi-moi corner", short_name: "Grain district", slogan: "Wholesome & steamed", blurb: "Jollof, fried rice, ofada and steamed moi-moi — the grain heart of the mall.", image: "/images/jollof-plantain.jpg", image_alt: "A bowl of seasoned rice with sides", icon: "fa-seedling", featured: false, sort_order: 2 },
+    { id: "protein-factory", name: "Protein factory", short_name: "Protein factory", slogan: "Power up", blurb: "Charcoal grills working round the clock — suya, chicken, fish and steak.", image: "/images/meat-skewers.jpg", image_alt: "Spiced skewers grilling over charcoal", icon: "fa-drumstick-bite", featured: false, sort_order: 3 },
+    { id: "snack-street", name: "Snack street", short_name: "Snack street", slogan: "Quick & crunchy", blurb: "Fried to order and gone in minutes — puff-puff, chin chin, samosa and bakery treats.", image: "/images/puff-puff.jpg", image_alt: "Golden fried dough puffs dusted with sugar", icon: "fa-cookie-bite", featured: false, sort_order: 4 },
+    { id: "porridge-yard", name: "Porridge & tubers yard", short_name: "Porridge yard", slogan: "Hearty & rustic", blurb: "One-pot wonders from the yard — yam, plantain and beans slow-cooked with palm oil.", image: "/images/jollof-pot.jpg", image_alt: "A hearty pot of porridge simmering", icon: "fa-carrot", featured: false, sort_order: 5 },
+    { id: "extras-sides", name: "The extras & sides", short_name: "Extras & sides", slogan: "Perfect companions", blurb: "The little things that finish a plate — coleslaw, dodo, wings and chilled drinks.", image: "/images/chicken-salad.jpg", image_alt: "A colourful bowl of fresh salad sides", icon: "fa-bowl-food", featured: false, sort_order: 6 },
   ],
 
   menu_items: [
-    { id: "bb-jollof", category_id: "build-a-belly", name: "Classic jollof box", desc: "Smoky party jollof, grilled chicken thigh, dodo and coleslaw.", price: 4200, image: "https://images.unsplash.com/photo-1615937657715-bc7b4b7962c1?auto=format&fit=crop&w=900&q=80", alt: "A plate of smoky jollof rice with chicken", tag: "Bestseller", rating: "4.9", icon: "fa-bowl-rice", available: true, sort_order: 0 },
-    { id: "bb-suya", category_id: "build-a-belly", name: "Suya skewer box", desc: "Charcoal suya skewers, spiced fries and yaji dip.", price: 4600, image: "https://images.unsplash.com/photo-1555939594-58d7cb561ad1?auto=format&fit=crop&w=900&q=80", alt: "Charcoal-grilled suya skewers", tag: "Spicy", rating: "4.8", icon: "fa-pepper-hot", available: true, sort_order: 1 },
-    { id: "bb-family", category_id: "build-a-belly", name: "Family feast box", desc: "Feeds four — rice, swallow, proteins, sides and drinks.", price: 15500, image: "https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=900&q=80", alt: "A large family spread of shared dishes", tag: "Sharing", rating: "5.0", icon: "fa-people-group", available: true, sort_order: 2 },
-    { id: "sw-egusi", category_id: "swallow-hall", name: "Egusi & eba", desc: "Melon-seed soup with goat meat and smoked fish.", price: 3900, image: "https://images.unsplash.com/photo-1565557623262-b51c2513a641?auto=format&fit=crop&w=900&q=80", alt: "A rich bowl of egusi soup with eba", tag: "Comfort", rating: "4.9", icon: "fa-bowl-food", available: true, sort_order: 0 },
-    { id: "sw-ogbono", category_id: "swallow-hall", name: "Ogbono & fufu", desc: "Draw soup with beef, kpomo and stockfish.", price: 3700, image: "https://images.unsplash.com/photo-1547592166-23ac45744acd?auto=format&fit=crop&w=900&q=80", alt: "A dark, hearty pot of ogbono soup", tag: null, rating: "4.8", icon: "fa-utensil-spoon", available: false, sort_order: 1 },
-    { id: "gr-jollof", category_id: "grain-district", name: "Smoky party jollof", desc: "Firewood-flavoured jollof with fried plantain.", price: 3500, image: "https://images.unsplash.com/photo-1615937657715-bc7b4b7962c1?auto=format&fit=crop&w=900&q=80", alt: "A plate of smoky party jollof rice", tag: "Bestseller", rating: "4.9", icon: "fa-bowl-rice", available: true, sort_order: 0 },
-    { id: "pf-suya", category_id: "protein-factory", name: "Beef suya skewers", desc: "Yaji-dusted beef off the coals, onions and extra pepper.", price: 4200, image: "https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=900&q=80", alt: "Char-grilled beef skewers with glaze", tag: "Spicy", rating: "4.9", icon: "fa-pepper-hot", available: true, sort_order: 0 },
-    { id: "pf-salmon", category_id: "protein-factory", name: "Charred salmon fillet", desc: "Atlantic salmon with honey glaze and greens.", price: 6500, image: "https://images.unsplash.com/photo-1467003909585-2f8a72700288?auto=format&fit=crop&w=900&q=80", alt: "A charred salmon fillet with herbs", tag: "Chef's pick", rating: "4.9", icon: "fa-fish-fins", available: true, sort_order: 1 },
-    { id: "sn-puff", category_id: "snack-street", name: "Golden puff-puff box", desc: "Ten warm puffs, sugar-dusted and airy.", price: 2000, image: "https://images.unsplash.com/photo-1551024601-bec78aea704b?auto=format&fit=crop&w=900&q=80", alt: "A box of golden sugar-dusted puff-puff", tag: "Sweet", rating: "4.7", icon: "fa-cookie-bite", available: true, sort_order: 0 },
-    { id: "ex-coleslaw", category_id: "extras-sides", name: "Coleslaw cup", desc: "Crunchy cabbage and carrot in creamy dressing.", price: 900, image: "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&w=900&q=80", alt: "A fresh crunchy coleslaw cup", tag: null, rating: "4.6", icon: "fa-leaf", available: true, sort_order: 0 },
+    { id: "bb-jollof", category_id: "build-a-belly", name: "Classic jollof box", desc: "Smoky party jollof, grilled chicken thigh, dodo and coleslaw.", price: 4200, image: "/images/grilled-chicken-jollof.jpg", alt: "A plate of smoky jollof rice with chicken", tag: "Bestseller", rating: "4.9", icon: "fa-bowl-rice", available: true, sort_order: 0 },
+    { id: "bb-suya", category_id: "build-a-belly", name: "Suya skewer box", desc: "Charcoal suya skewers, spiced fries and yaji dip.", price: 4600, image: "/images/suya-skewer-box.jpg", alt: "A box of charcoal-grilled suya skewers with fries and dip", tag: "Spicy", rating: "4.8", icon: "fa-pepper-hot", available: true, sort_order: 1 },
+    { id: "bb-family", category_id: "build-a-belly", name: "Family feast box", desc: "Feeds four — rice, swallow, proteins, sides and drinks.", price: 15500, image: "/images/african-spread.jpg", alt: "A large family spread of shared dishes", tag: "Sharing", rating: "5.0", icon: "fa-people-group", available: true, sort_order: 2 },
+    { id: "sw-egusi", category_id: "swallow-hall", name: "Egusi & eba", desc: "Melon-seed soup with goat meat and smoked fish.", price: 3900, image: "/images/egusi-soup.jpg", alt: "A rich bowl of egusi soup with eba", tag: "Comfort", rating: "4.9", icon: "fa-bowl-food", available: true, sort_order: 0 },
+    { id: "sw-ogbono", category_id: "swallow-hall", name: "Ogbono & fufu", desc: "Draw soup with beef, kpomo and stockfish.", price: 3700, image: "/images/soup-leaf-bowl.jpg", alt: "A dark, hearty pot of ogbono soup", tag: null, rating: "4.8", icon: "fa-utensil-spoon", available: false, sort_order: 1 },
+    { id: "gr-jollof", category_id: "grain-district", name: "Smoky party jollof", desc: "Firewood-flavoured jollof with fried plantain.", price: 3500, image: "/images/jollof-plantain.jpg", alt: "A plate of smoky party jollof rice", tag: "Bestseller", rating: "4.9", icon: "fa-bowl-rice", available: true, sort_order: 0 },
+    { id: "pf-suya", category_id: "protein-factory", name: "Beef suya skewers", desc: "Yaji-dusted beef off the coals, onions and extra pepper.", price: 4200, image: "/images/suya-board.jpg", alt: "Yaji-spiced beef suya skewers charred on a charcoal grill", tag: "Spicy", rating: "4.9", icon: "fa-pepper-hot", available: true, sort_order: 0 },
+    { id: "pf-salmon", category_id: "protein-factory", name: "Charred salmon fillet", desc: "Atlantic salmon with honey glaze and greens.", price: 6500, image: "/images/salmon.jpg", alt: "A charred salmon fillet with herbs", tag: "Chef's pick", rating: "4.9", icon: "fa-fish-fins", available: true, sort_order: 1 },
+    { id: "sn-puff", category_id: "snack-street", name: "Golden puff-puff box", desc: "Ten warm puffs, sugar-dusted and airy.", price: 2000, image: "/images/puff-puff.jpg", alt: "Golden sugar-dusted puff-puff piled in a bowl", tag: "Sweet", rating: "4.7", icon: "fa-cookie-bite", available: true, sort_order: 0 },
+    { id: "ex-coleslaw", category_id: "extras-sides", name: "Coleslaw cup", desc: "Crunchy cabbage and carrot in creamy dressing.", price: 900, image: "/images/coleslaw.jpg", alt: "A fresh crunchy coleslaw cup", tag: null, rating: "4.6", icon: "fa-leaf", available: true, sort_order: 0 },
   ],
 
   sellers: [

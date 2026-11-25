@@ -36,7 +36,7 @@ function slideToRow(s: HeroSlide): HeroRow {
 }
 
 const EMPTY_HERO: HeroRow = {
-  image: "https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=1800&q=80",
+  image: "/images/rice-feast-pans.jpg",
   alt: "A new hero slide",
   kickerIcon: "fa-store",
   kicker: "New slide",
@@ -353,7 +353,7 @@ function GalleryEditor() {
             setSlides([
               ...slides,
               {
-                image: "https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=1600&q=80",
+                image: "/images/rice-feast-pans.jpg",
                 alt: "A new gallery photo",
                 caption: "New photo",
                 where: "Bellymall",

@@ -6,6 +6,7 @@ import {
   errorMessage,
   hit,
   newItemId,
+  PLACEHOLDER_IMAGE,
   uploadSiteImage,
   type CategoryRow,
   type ProductRow,
@@ -374,9 +375,7 @@ function AddDish({ cats, onDone }: { cats: CategoryRow[]; onDone: () => void }) 
       name: name.trim(),
       desc: desc.trim(),
       price: Math.max(0, Math.round(price)),
-      image:
-        image ||
-        "https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=900&q=80",
+      image: image || PLACEHOLDER_IMAGE,
       alt: name.trim(),
       tag: tag.trim() || null,
       rating,
