@@ -17,7 +17,7 @@ update public.menu_items target
     ('bb-jollof', '/images/grilled-chicken-jollof.jpg', 'A plate of smoky jollof rice with a flame-grilled chicken leg'),
     ('bb-suya', '/images/suya-skewer-box.jpg', 'A box of charcoal-grilled beef suya skewers with spiced fries and pepper dip'),
     ('bb-chicken', '/images/jollof-chicken-skewers.jpg', 'Grilled chicken skewers served over seasoned jollof rice'),
-    ('bb-family', '/images/african-spread.jpg', 'A family table of fried plantain, grilled chicken and roasted corn'),
+    ('bb-family', '/images/african-family-spread.jpg', 'A spread of fufu, beans and fish stew for four on a patterned cloth'),
     ('bb-veggie', '/images/roasted-veg-bowl.jpg', 'A bowl of roasted vegetables, potatoes and greens'),
     ('bb-beans', '/images/rice-beans-greens.jpg', 'A bowl of jollof rice, stewed beans and sautéed greens'),
     ('sw-egusi', '/images/egusi-soup.jpg', 'A rich bowl of melon-seed egusi soup'),
@@ -27,7 +27,7 @@ update public.menu_items target
     ('sw-catfish', '/images/pepper-fish-soup.jpg', 'A spicy red pepper fish soup with fresh chillies'),
     ('gr-jollof', '/images/jollof-plantain.jpg', 'Smoky party jollof rice plated with fried plantain'),
     ('gr-fried', '/images/rice-feast-pans.jpg', 'Rice dishes served with chicken and vegetables in pans'),
-    ('gr-ofada', '/images/jollof-rice-pan.jpg', 'Local rice served with a peppery stew and sides'),
+    ('gr-ofada', '/images/ofada-rice-plantain.jpg', 'Ofada rice plated with pepper stew and fried plantain'),
     ('gr-beans', '/images/beans-plantain.jpg', 'Stewed beans with golden fried plantain and pepper sauce'),
     ('gr-moi', '/images/moi-moi.jpg', 'Moi-moi steamed in a leaf and served on a red plate with pepper stew'),
     ('pf-suya', '/images/suya-board.jpg', 'Yaji-spiced beef suya skewers charred on a charcoal grill'),
@@ -41,8 +41,8 @@ update public.menu_items target
     ('sn-croissant', '/images/croissant.jpg', 'Two buttery croissants on a plate'),
     ('sn-french', '/images/french-toast.jpg', 'Thick-cut French toast with butter and syrup'),
     ('py-plantain', '/images/angolan-stew.jpg', 'Stewed plantain with meat served in a white bowl'),
-    ('py-banga', '/images/meat-cornmeal.jpg', 'A hearty bowl of soup with meat, greens and a starchy side'),
-    ('py-ewa', '/images/beans-plantain.jpg', 'Beans in smoky agoyin-style sauce with fried plantain'),
+    ('py-banga', '/images/palm-nut-soup.jpg', 'Palm-nut soup with fish and meat in a white bowl'),
+    ('py-ewa', '/images/beans-and-bread.jpg', 'A bowl of beans in pepper sauce with slices of agege bread'),
     ('py-bole', '/images/bole-fish-plantain.jpg', 'Fried fish served with golden plantain, rice and fresh salad'),
     ('py-asun', '/images/beef-ribs.jpg', 'Charred peppered meat fresh off the grill'),
     ('ex-coleslaw', '/images/coleslaw.jpg', 'A bowl of creamy coleslaw'),
@@ -105,6 +105,14 @@ update public.site_content target
  where target.key = rebuild.key;
 
 commit;
+
+-- 3b) ONE DISH RENAMED to match its photo -----------------------------
+-- The old name promised "bites"; the photography is a whole peppered
+-- steak, so the catalog and the live row now agree.
+update public.menu_items
+   set name = 'Peppered steak',
+       "desc" = 'Seared steak in a black pepper glaze.'
+ where id = 'pf-steak';
 
 -- 4) VERIFY — every local_images count should equal its rows -----------
 select 'menu_items' as table_name, count(*) as rows,
