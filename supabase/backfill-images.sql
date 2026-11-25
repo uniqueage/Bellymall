@@ -21,7 +21,7 @@ update public.menu_items target
     ('bb-veggie', '/images/roasted-veg-bowl.jpg', 'A bowl of roasted vegetables, potatoes and greens'),
     ('bb-beans', '/images/rice-beans-greens.jpg', 'A bowl of jollof rice, stewed beans and sautéed greens'),
     ('sw-egusi', '/images/egusi-soup.jpg', 'A rich bowl of melon-seed egusi soup'),
-    ('sw-ogbono', '/images/soup-leaf-bowl.jpg', 'A dark draw soup served in a patterned bowl'),
+    ('sw-ogbono', '/images/ogbono-draw-soup.jpg', 'A dark, glossy ogbono draw soup with stockfish and a wrap of fufu'),
     ('sw-okra', '/images/green-soup-sides.jpg', 'A green okra soup in a clay bowl with pepper and sides'),
     ('sw-efo', '/images/spinach-stew.jpg', 'Stewed greens with assorted meat in a white bowl'),
     ('sw-catfish', '/images/pepper-fish-soup.jpg', 'A spicy red pepper fish soup with fresh chillies'),
@@ -32,7 +32,7 @@ update public.menu_items target
     ('gr-moi', '/images/moi-moi.jpg', 'Moi-moi steamed in a leaf and served on a red plate with pepper stew'),
     ('pf-suya', '/images/suya-board.jpg', 'Yaji-spiced beef suya skewers charred on a charcoal grill'),
     ('pf-chicken', '/images/grilled-chicken-spiced.jpg', 'Peppered flame-grilled chicken pieces on a plate'),
-    ('pf-fish', '/images/whole-fish.jpg', 'A whole grilled fish with tomatoes and herbs'),
+    ('pf-fish', '/images/croaker-and-dodo.jpg', 'A whole grilled croaker with fried plantain, onions and pepper sauce'),
     ('pf-salmon', '/images/salmon.jpg', 'A charred salmon fillet plated with greens and salsa'),
     ('pf-steak', '/images/peppered-steak.jpg', 'Pepper-glazed steak served on a white plate'),
     ('sn-puff', '/images/puff-puff.jpg', 'Golden puff-puff freshly fried and served in a bowl'),
@@ -87,7 +87,7 @@ update public.site_content target
       cross join lateral jsonb_array_elements(sc.value) with ordinality as element(slide, ord)
       left join (values
         ('hero_slides', 0, '/images/rice-feast-pans.jpg', 'A spread of seasoned rice, grilled chicken and plantain across iron pans'),
-        ('hero_slides', 1, '/images/egusi-soup.jpg', 'A bowl of rich melon-seed egusi soup'),
+        ('hero_slides', 1, '/images/egusi-pot.jpg', 'A pot of egusi soup simmering with greens and assorted meat'),
         ('hero_slides', 2, '/images/suya-charcoal-grill.jpg', 'Rows of suya skewers grilling over glowing charcoal'),
         ('hero_slides', 3, '/images/puff-puff.jpg', 'Golden puff-puff fried fresh and piled in a bowl'),
         ('gallery_slides', 0, '/images/african-family-spread.jpg', 'A spread of fufu, beans and fish stew at Hall One'),
@@ -106,11 +106,16 @@ update public.site_content target
 
 commit;
 
--- 3b) ONE DISH RENAMED to match its photo -----------------------------
+-- 3b) DISHES RENAMED to match their photos -------------------------
 update public.menu_items
    set name = 'Peppered steak',
        "desc" = 'Seared steak in a black pepper glaze.'
  where id = 'pf-steak';
+
+update public.menu_items
+   set name = 'Moi-moi',
+       "desc" = 'Steamed bean pudding, wrapped in leaves and served hot.'
+ where id = 'gr-moi';
 
 -- 4) VERIFY — every local_images count should equal its rows -----------
 select 'menu_items' as table_name, count(*) as rows,

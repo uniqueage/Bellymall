@@ -207,6 +207,54 @@ export function AboutPage() {
           )}
         </div>
       </section>
+
+      {/* photo credits — required by the CC BY-SA licences */}
+      <section className="section" id="photo-credits">
+        <div className="container">
+          <div className="section-head">
+            <span className="eyebrow">Credits</span>
+            <h2 className="section-title">
+              The <em>photography</em>
+            </h2>
+            <p className="section-sub">
+              Most dish photography is licensed from Pexels. These photographs come from Wikimedia Commons contributors
+              and are used under CC BY-SA 4.0:
+            </p>
+          </div>
+          <ul className="about-credits">
+            <li>
+              <a
+                href="https://commons.wikimedia.org/wiki/File:Black_draw_soup_and_swallow.jpg"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Black draw soup and swallow
+              </a>{" "}
+              — Iamgreaced, CC BY-SA 4.0
+            </li>
+            <li>
+              <a
+                href="https://commons.wikimedia.org/wiki/File:Roasted_Plantain_served_with_Grilled_fish.jpg"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Roasted plantain served with grilled fish
+              </a>{" "}
+              — Aderiqueza, CC BY-SA 4.0
+            </li>
+            <li>
+              <a
+                href="https://commons.wikimedia.org/wiki/File:Egusi_soup_in_a_plate.jpg"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Egusi soup in a plate
+              </a>{" "}
+              — Tesleemah, CC BY-SA 4.0
+            </li>
+          </ul>
+        </div>
+      </section>
     </div>
   );
 }

@@ -11,6 +11,7 @@ const EXPLORE_LINKS = [
   { label: "Kitchen gallery", href: "/#gallery" },
   { label: "Deals", href: "/#deals" },
   { label: "About us", href: "/about" },
+  { label: "Photo credits", href: "/about#photo-credits" },
 ];
 
 export function Footer() {
